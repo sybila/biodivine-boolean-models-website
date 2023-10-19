@@ -17,7 +17,7 @@ const ModelViewer: React.FC<ModelViewerProps> = ({modelData}) => {
     }, []);
 
     return (
-        <div style={{ width: '800px', height: '550px', margin: '0 auto' }}>
+        <div style={{ width: '800px', height: '550px', margin: '0 auto', textAlign: 'left' }}>
             <div id="model-view" style={{ width: '800px', height: '550px', borderRadius: '20px', border: '2px solid black' }}></div>
         </div>
     );
