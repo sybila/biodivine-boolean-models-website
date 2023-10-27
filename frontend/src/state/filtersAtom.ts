@@ -36,7 +36,17 @@ export const showAdvancedAFiltersAtom = atom<boolean>({
     default: false,
 });
 
+export const filterChangedAtom = atom<boolean>({
+    key: 'filterChanged',
+    default: false,
+});
+
 export const filteredModelsAtom = atom<Model[]>({
     key: 'filteredModels',
     default: [],
+});
+
+export const pageNumberAtom = atom<number>({
+    key: 'pageNumber',
+    default: 1,
 });

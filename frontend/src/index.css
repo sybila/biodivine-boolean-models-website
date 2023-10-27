@@ -69,13 +69,14 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   background-color: #d05d5d;
   transition: .25s;
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: none;
 }
 
 .content {
@@ -154,6 +155,10 @@ ul {
   list-style-type: none;
 }
 
+.list_title {
+  margin-left: 1rem;
+}
+
 .model_item {
   border: 2px solid black;
   border-radius: 1rem;
@@ -171,6 +176,7 @@ ul {
 
 .details_link {
   align-self: flex-start;
+  flex: none;
 }
 
 .details_button {
@@ -202,11 +208,12 @@ h4 {
   display: flex;
   flex-direction: column;
   background-color: white;
-  width: 65vw;
-  margin: .2rem 8.8rem;
+  width: 70vw;
+  margin: .2rem 0 .2rem 8.5rem;
   padding: 1rem 2rem 1rem 2rem;
   justify-content: space-between;
   position: relative;
+  box-sizing: border-box;
 }
 
 .filter_bar::before {
@@ -242,6 +249,10 @@ h4 {
   text-align: left;
 }
 
+.selectedKeyword {
+  font-weight: bold;
+}
+
 .buttons {
   display: flex;
   flex-direction: column;
@@ -256,6 +267,20 @@ h4 {
   width: 10rem;
 }
 
+.basicFilter_items {
+  display: flex;
+  margin-bottom: .8rem;
+}
+
+.sortBy_container {
+  display: flex;
+  align-items: center;
+}
+
+.sortBy_label {
+  margin-left: 2rem;
+}
+
 .sort_select {
   margin-left: 2rem;
   color: black;
@@ -264,6 +289,24 @@ h4 {
   border-radius: .3rem;
   padding: .9rem 1rem;
   width: 10rem;
+}
+
+.mobileViewerComponent {
+  display: none;
+}
+
+.modelViewerContainer {
+  width: 800px;
+  height: 550px;
+  margin: 0 auto 2rem auto;
+  text-align: left;
+}
+
+.modelView {
+  width: 800px;
+  height: 550px;
+  border-radius: 20px;
+  border: 2px solid black;
 }
 
 @media only screen and (max-width: 1023px) {
@@ -304,6 +347,16 @@ h4 {
 
   .buttons {
     flex-direction: row;
+  }
+
+  .modelViewerContainer{
+    width: 650px;
+    height: 500px;
+  }
+
+  .modelView {
+    width: 650px;
+    height: 500px;
   }
 }
 
@@ -383,10 +436,31 @@ h4 {
 
   .basic_filter {
     flex-direction: column;
+    width: 50vw;
+  }
+
+  .basicFilter_items {
+    flex-direction: column;
+  }
+
+  .sortBy_container {
+    flex-direction: column;
   }
 
   .sortBy_select {
     margin: 1rem 0;
+  }
+
+  .sortBy_label {
+    margin-left: 0;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .advanced_filter {
+    flex-direction: column;
   }
 
   .model_list {
@@ -421,5 +495,17 @@ h4 {
 
   .model_details_data {
     margin: 0 0 .5rem 2rem;
+  }
+
+  .modelViewerComponent {
+    display: none;
+  }
+
+  .mobileViewerComponent {
+    display: unset;
+  }
+
+  .newTab_button {
+    margin-bottom: 2rem;
   }
 }

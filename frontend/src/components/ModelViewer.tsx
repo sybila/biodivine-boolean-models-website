@@ -1,24 +1,43 @@
 import React, { useEffect } from 'react';
 // @ts-ignore - js/ts type problem
 import {show_model} from './scripts/model-view.js';
+import {useParams} from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
+import {ModelsApi} from "../services";
 
 type ModelViewerProps = {
-    modelData: string;
+    modelData?: string;
 };
 const ModelViewer: React.FC<ModelViewerProps> = ({modelData}) => {
-    useEffect(() => {
-        const init = () => {
-            let container = document.getElementById("model-view");
+    const { id } = useParams();
+    const { data: model } = useQuery({
+        queryKey: ['model'],
+        queryFn: () => ModelsApi.getSpecific(id!),
+        cacheTime: 0
+    });
 
+    useEffect(() => {
+        let container = document.getElementById("model-view");
+        if (!modelData) {
+            let dataString = ''
+            const data = model?.modelData;
+            if (data) {
+                try {
+                    const tmp = new Uint8Array((data as unknown as {type: string, data: number[]}).data);
+                    dataString = new TextDecoder('utf-8').decode(tmp);
+                } catch (e) {
+                    console.error("error converting", e);
+                }
+            }
+            show_model(container, dataString);
+        } else {
             show_model(container, modelData);
         }
-
-        init();
-    }, []);
+    });
 
     return (
-        <div style={{ width: '800px', height: '550px', margin: '0 auto' }}>
-            <div id="model-view" style={{ width: '800px', height: '550px', borderRadius: '20px', border: '2px solid black' }}></div>
+        <div className="modelViewerContainer">
+            <div className="modelView" id="model-view"></div>
         </div>
     );
 };
