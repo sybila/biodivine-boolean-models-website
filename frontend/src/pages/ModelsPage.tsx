@@ -324,9 +324,8 @@ const ModelsPage: React.FC = () => {
                                                 <b>Keywords:</b> {model.keywords.map((keyword, index) => (
                                                 <span
                                                     key={index}
-                                                    className={selectedKeywords.includes(keyword) ? "selectedKeyword" : ""}
-                                                    onClick={() => handleKeywordChange(keyword)}
-                                                    style={{cursor: 'pointer'}}>[{keyword}]&nbsp;
+                                                    className={selectedKeywords.includes(keyword) ? "selectedKeyword keyword" : "keyword"}                                                    
+                                                    onClick={() => handleKeywordChange(keyword)}>[{keyword}]
                                                 </span>))}
                                             </div>
                                             <div className="model_details_numbers">
