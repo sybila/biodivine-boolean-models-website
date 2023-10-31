@@ -322,6 +322,24 @@ h4 {
   border: 2px solid black;
 }
 
+.fullscreen > .modelViewerContainer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+
+.fullscreen > .modelViewerContainer > .modelView {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  border: none;
+}
+
 @media only screen and (max-width: 1023px) {
   h1 {
     font-size: 2.7em;
@@ -521,10 +539,10 @@ h4 {
   }
 
   .mobileViewerComponent {
-    display: unset;
+    display: block;
   }
 
   .newTab_button {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 }
