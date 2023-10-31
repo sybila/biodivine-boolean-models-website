@@ -167,6 +167,7 @@ ul {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
 .model_info {
@@ -201,15 +202,20 @@ h4 {
   margin: 0 0 1rem 2rem;
 }
 
+.filter_bar_container {
+  margin: 0 5rem;
+  padding-inline-start: 40px;
+}
+
 .filter_bar {
-  border-radius: .5rem;
+  border-radius: 1rem;
   border: 2px solid black;
   align-self: center;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: white;  
   width: 70vw;
-  margin: .2rem 0 .2rem 8.5rem;
+  margin: 1rem;
   padding: 1rem 2rem 1rem 2rem;
   justify-content: space-between;
   position: relative;
@@ -426,8 +432,13 @@ h4 {
     margin: 0 3rem;
   }
 
+  .filter_bar_container {
+    margin: 0;
+    padding-inline-start: 0;    
+  }
+
   .filter_bar {
-    margin: 2rem auto;
+    margin: 1rem auto;
   }
 
   .filter_bar::before {
@@ -478,6 +489,7 @@ h4 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-sizing: border-box;
   }
 
   .details_link {

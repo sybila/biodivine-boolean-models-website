@@ -153,6 +153,7 @@ const ModelsPage: React.FC = () => {
                 <h1 className="title"><span className="subtitle">Model Repository/</span>BIODIVINE</h1>
                 <Link to="/"><button>About Us</button></Link>
             </div>
+            <div className="filter_bar_container">
             <div className="filter_bar">
                 <div className="basic_filter">
                     <div className="basicFilter_items">
@@ -307,6 +308,7 @@ const ModelsPage: React.FC = () => {
                         </div>
                     </div>
                 )}
+            </div>
             </div>
             {isLoading ? (
                 <CircularProgress />
