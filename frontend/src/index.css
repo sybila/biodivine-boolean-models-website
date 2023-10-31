@@ -259,6 +259,13 @@ h4 {
   font-weight: bold;
 }
 
+.keyword {
+  display: inline-block;
+  text-decoration: underline;
+  cursor: pointer;
+  margin: 0 0.2rem;
+}
+
 .buttons {
   display: flex;
   flex-direction: column;
