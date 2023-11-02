@@ -1,29 +1,26 @@
-import client from "./repositories/client";
+import client from './repositories/client';
+import fs from 'fs/promises';
+import path from 'path';
 
-const fs = require('fs');
-const path = require('path');
-const { promisify } = require('util');
-
-const readdir = promisify(fs.readdir);
-const readFile = promisify(fs.readFile);
+const MODELS_DIR_PATH = path.join(__dirname, '..', '..', 'models'); // Currently inside backend/src/ - that is why .. ..
+const METADATA_FILE_NAME = 'metadata.json';
+const AEON_FILE_NAME = 'model.aeon';
 
 const processedFiles = new Set();
 
 export const seed = async () => {
     try {
-        const rootDir = path.join(__dirname, '..', '..', 'models'); // Adjust the path to access the 'validationModels' directory
-
-        const subFolders = await readdir(rootDir, { withFileTypes: true });
+        const subFolders = await fs.readdir(MODELS_DIR_PATH, { withFileTypes: true });
 
         for (const subFolder of subFolders) {
             if (subFolder.isDirectory()) {
-                const metadataFilePath = path.join(rootDir, subFolder.name, 'metadata.json');
-                const aeonFilePath = path.join(rootDir, subFolder.name, 'model.aeon');
+                const metadataFilePath = path.join(MODELS_DIR_PATH, subFolder.name, METADATA_FILE_NAME);
+                const aeonFilePath = path.join(MODELS_DIR_PATH, subFolder.name, AEON_FILE_NAME);
 
                 if (!processedFiles.has(aeonFilePath)) {
                     try {
-                        const metadata = JSON.parse(await readFile(metadataFilePath, 'utf-8'));
-                        const aeonData = await readFile(aeonFilePath);
+                        const metadata = JSON.parse(await fs.readFile(metadataFilePath, 'utf-8'));
+                        const aeonData = await fs.readFile(aeonFilePath);
 
                         await client.model.create({
                             data: {
@@ -48,8 +45,9 @@ export const seed = async () => {
                 }
             }
         }
+        console.log('All the files were successfully imported!');
     } catch (e) {
-        console.error('Error reading subfolders!');
+        console.error('Error reading subFolders!', e as Error);
     } finally {
         await client.$disconnect();
     }

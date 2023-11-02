@@ -1,9 +1,9 @@
 import client from "../client";
 import {Result} from "@badrap/result";
 import {ModelCreateData} from "../types/data";
-import {ModelCreateResult} from "../types/return";
+import {ModelResult} from "../types/return";
 
-const createModel = async (data: ModelCreateData): ModelCreateResult => {
+const createModel = async (data: ModelCreateData): ModelResult => {
     try {
         return await client.$transaction(async (tx) => {
             const model = await tx.model.create({ data: { ...data } });

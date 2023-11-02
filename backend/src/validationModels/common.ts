@@ -42,4 +42,17 @@ export const validateModelCreateBody = z.object({
     notes: z.string(),
     bib: z.string(),
     modelData: z.instanceof(Buffer)
-})
+});
+
+export const validateModelUpdateBody = z.object({
+    name: z.string().optional(),
+    urlPublication: z.string().url().optional(),
+    urlModel: z.string().url().optional(),
+    keywords: z.array(z.string()).optional(),
+    notes: z.string().optional(),
+}).refine(data => {
+    // Check if at least one of the properties is present and not undefined
+    return Object.values(data).some(value => value !== undefined);
+}, {
+    message: "At least one field must be provided",
+});
