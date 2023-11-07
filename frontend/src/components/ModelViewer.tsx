@@ -17,7 +17,7 @@ const ModelViewer: React.FC<ModelViewerProps> = ({modelData}) => {
     });
 
     useEffect(() => {
-        let container = document.getElementById("model-view");
+        const container = document.getElementById("model-view");
         if (!modelData) {
             let dataString = ''
             const data = model?.modelData;

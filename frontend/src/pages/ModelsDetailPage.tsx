@@ -8,7 +8,7 @@ import { CircularProgress } from '@mui/material';
 
 const ModelsDetailPage: React.FC = () => {
     const { id } = useParams();
-    const [fData, setFData] = useState<string>('');
+    const [fileData, setFileData] = useState<string>('');
     const [modifications, setModifications] = useState<string>('');
     const { data: model, isLoading } = useQuery({
         queryKey: ['model'],
@@ -27,7 +27,7 @@ const ModelsDetailPage: React.FC = () => {
                 try {
                     const tmp = new Uint8Array((data as unknown as {type: string, data: number[]}).data);
                     const dataString = new TextDecoder('utf-8').decode(tmp);
-                    setFData(dataString);
+                    setFileData(dataString);
                 } catch (e) {
                     console.error("error converting", e);
                 }
@@ -37,7 +37,7 @@ const ModelsDetailPage: React.FC = () => {
             if (notes) {
                 setModifications(parseModifications(notes))
             }
-    });
+    }, [model]);
 
     return (
         <>
@@ -65,12 +65,12 @@ const ModelsDetailPage: React.FC = () => {
                         <h3>Model Citation</h3>
                         <div className="code_block">
                             <p className="bib_text" style={{ whiteSpace: 'pre-wrap' }}>
-                                {model?.bib}
+                                {model!.bib}
                             </p>
                         </div>
                         <h3>Model Viewer</h3>
                         <div className="modelViewerComponent">
-                            <ModelViewer modelData={fData} />
+                            <ModelViewer modelData={fileData} />
                         </div>
                         <div className="mobileViewerComponent">
                             <button className="newTab_button" onClick={openInNewTab}>Open model view in new tab</button>

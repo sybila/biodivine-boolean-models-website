@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "read": "ts-node src/tmpReadModels.ts"
+    "seed": "ts-node src/tmpReadModels.ts"
   },
   "keywords": [],
   "author": "",
