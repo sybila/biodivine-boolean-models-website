@@ -1,0 +1,25 @@
+name: Generate Docker Containers
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  backend:
+    name: Build backend image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build image
+        working-directory: backend
+        run: docker build -t daemontus/bbm-backend .
+      - name: Push image
+        working-directory: backend
+        run: docker push daemontus/bbm-backend
