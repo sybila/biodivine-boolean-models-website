@@ -5,6 +5,7 @@ import { ApiResponse } from './types';
 import modelRouter from "./routes/modelRoutes";
 import bodyParser from "body-parser";
 import webhookRouter from "./routes/webhookRoutes";
+import morgan from 'morgan';
 
 const app = express();
 const port = env.PORT ?? 3000;
@@ -13,6 +14,9 @@ app.use(bodyParser.json());
 
 // CORS middleware
 app.use(cors());
+
+// Logging
+app.use(morgan('combined'))
 
 // My implemented routers
 app.use(modelRouter);
