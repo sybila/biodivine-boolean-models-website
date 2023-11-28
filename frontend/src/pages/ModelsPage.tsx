@@ -94,9 +94,9 @@ const ModelsPage: React.FC = () => {
 
     return (
         <>
-            <div className="header">
-                <h1 className="title"><span className="subtitle">Model Repository/</span>BIODIVINE</h1>
-                <Link to="/"><button>About Us</button></Link>
+            <div className="page__header">
+                <h1 className="page__title"><span className="page__subtitle">Model Repository/</span>BIODIVINE</h1>
+                <Link to="/"><button className="page__button">About Us</button></Link>
             </div>
             <FilterBar
                 searchNameQuery={searchNameQuery}
@@ -122,30 +122,30 @@ const ModelsPage: React.FC = () => {
                 <CircularProgress />
             ) : (
                 <div>
-                    <ul className="model_list">
-                        <h2 className="list_title">Models List [{numberOfModels}]</h2>
+                    <ul className="models-page__list">
+                        <h2 className="page__content-title models-page__list-title">Models List [{numberOfModels}]</h2>
                         {paginatedModels?.map((model) => (
                             <li key={model.id}>
-                                <div className="model_item">
-                                    <div className="model_info">
-                                        <h4>{model.name}</h4>
-                                        <div className="model_details">
-                                            <div className="model_details_data">
+                                <div className="models-page__item">
+                                    <div className="models-page__item-info">
+                                        <h4 className="models-page__item-title">{model.name}</h4>
+                                        <div className="models-page__item-details">
+                                            <div className="models-page__item-details-data">
                                                 <b>Keywords:</b> {model.keywords.map((keyword, index) => (
                                                 <span
                                                     key={index}
-                                                    className={selectedKeywords.includes(keyword) ? "selectedKeyword keyword" : "keyword"}
+                                                    className={selectedKeywords.includes(keyword) ? "models-page__keyword--selected models-page__keyword" : "models-page__keyword"}
                                                     onClick={() => handleKeywordChange(keyword)}>[{keyword}]
                                                 </span>))}
                                             </div>
-                                            <div className="model_details_numbers">
-                                                <p className="model_details_data"><b>Inputs:</b> {model.inputs}</p>
-                                                <p className="model_details_data"><b>Regulations:</b> {model.regulations}</p>
-                                                <p className="model_details_data"><b>Variables:</b> {model.variables}</p>
+                                            <div className="models-page__item-details-numbers">
+                                                <p className="models-page__item-details-data"><b>Inputs:</b> {model.inputs}</p>
+                                                <p className="models-page__item-details-data"><b>Regulations:</b> {model.regulations}</p>
+                                                <p className="models-page__item-details-data"><b>Variables:</b> {model.variables}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <Link className="details_link" to={`/models/${model.id}`}><button className="details_button">Details {'>'}</button></Link>
+                                    <Link className="models-page__details-link" to={`/models/${model.id}`}><button className="page__button models-page__details-button">Details {'>'}</button></Link>
                                 </div>
                             </li>
                         ))}

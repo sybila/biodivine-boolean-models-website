@@ -1,34 +1,70 @@
-# model-repository
+# Biodivine Model Repository
 
 
+## Prerequisites
+Make sure you have Docker and Docker Compose installed on your system. If not, follow the installation guides below:
+- Docker: [Get Docker](https://www.docker.com/get-started)
+- Docker Compose: [Install Docker Compose](https://docs.docker.com/compose/install/)
 
-## Getting started
+## Configuration
+Before starting, configure the environment variables required for the application. Create a `.env` file in the backend directory of project with the following content:
 
-To run this project you need to do  following:
+```
+PORT=3001
+DATABASE_URL="postgresql://postgres:postgres@localhost:5555/my-db?schema=public"
+```
 
-You need to have docker, docker compose installed. Then run following command to run the database
 
+## Setting up the Database
+First, run Docker desktop and wait for it to run.
+Navigate to the backend directory where your `docker-compose.yml` is located and start the database container:
+
+```
+docker-compose up -d postgres
+```
+
+This command will set up a PostgreSQL container running on port 5555.
+
+## Backend Setup
+Navigate to backend directory:
 ```
 cd backend
-docker-compose up -d
 ```
 
-When your db is running successfully, you can run the backend with following command (make sure you are in backend directory).
-
+### 1. Install dependencies
 ```
-npm i // to install all the dependencies
-npm run start // to run the backend script
+npm install
+```
+### 2. Run Prisma migrations
+```
+npx prisma migrate dev --name init
+```
+### 3. Seed the database
+```
+npm run seed
+```
+### 4. Start the backend server
+```
+npm run start
 ```
 
-When backend is running, open another terminal and run frontend (make sure to be in frontend folder).
+The backend should now be running and listening on the port specified in the .env file.
 
+## Frontend Setup
+Open second terminal window and navigate to frontend directory:
 ```
-cd frontend 
-npm i
+cd frontend
+```
+### 1. Install dependencies
+```
+npm install
+```
+### 2. Run the frontend server
+```
 npm run dev
 ```
+The frontend should now be accessible in your browser.
 
-After these steps, your project should be running on localhost url provided in terminal.
+## Accessing the Application
+Open your web browser and go to http://localhost:[frontend-port] to view the application. Replace [frontend-port] with the port number where the frontend server is running (should be displayed in terminal after running frontend server).
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.

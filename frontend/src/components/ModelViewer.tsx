@@ -36,8 +36,8 @@ const ModelViewer: React.FC<ModelViewerProps> = ({modelData}) => {
     });
 
     return (
-        <div className="modelViewerContainer">
-            <div className="modelView" id="model-view"></div>
+        <div className="model-viewer__container">
+            <div className="model-viewer__view" id="model-view"></div>
         </div>
     );
 };

@@ -12,7 +12,7 @@ function App() {
               <Route index element={<MainPage />}/>
               <Route path="models" element={<ModelsPage />}/>
               <Route path="models/:id" element={<ModelsDetailPage />}/>
-              <Route path="models/:id/modelView" element={<div className="fullscreen"><ModelViewer /></div>}/>
+              <Route path="models/:id/modelView" element={<div className="model-viewer__fullscreen"><ModelViewer /></div>}/>
           </Route>
       </Routes>
   )

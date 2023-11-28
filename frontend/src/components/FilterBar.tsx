@@ -27,10 +27,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
     toggleAdvancedFilters,
     handleResetFilters}) => {
     return (
-        <div className="filter_bar_container">
-            <div className="filter_bar">
-                <div className="basic_filter">
-                    <div className="basicFilter_items">
+        <div className="filter-bar">
+            <div className="filter-bar__content">
+                <div className="filter-bar__basic">
+                    <div className="filter-bar__basic-items">
                         <TextField
                             label="Search"
                             variant="outlined"
@@ -52,11 +52,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
                                 }
                             }}
                         />
-                        <div className="sortBy_container">
-                            <span className="sortBy_label"><b>Sort by</b></span>
-                            <div className="sortBy_items">
+                        <div className="filter-bar__sort">
+                            <span className="filter-bar__sort-label"><b>Sort by</b></span>
+                            <div className="filter-bar__sort-options">
                                 <Select
-                                    className="sortBy_select"
+                                    className="filter-bar__select"
                                     style={{ marginLeft: '.8rem'}}
                                     value={sortBy}
                                     onChange={(e) => {
@@ -82,7 +82,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                             </div>
                         </div>
                     </div>
-                    <div className="buttons">
+                    <div className="filter-bar__actions">
                         <Button
                             style={{
                                 outline: 'none',
@@ -115,10 +115,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
                     </div>
                 </div>
                 {showAdvancedFilters && (
-                    <div className="advanced_filter">
-                        <div className="advancedFilter_keywords" style={{width: '-webkit-fill-available'}}>
-                            <p className="keywords_label"><b>Keywords:</b></p>
-                            <div className="keywords"><br/>
+                    <div className="filter-bar__advanced">
+                        <div className="filter-bar__advanced-keywords" style={{width: '-webkit-fill-available'}}>
+                            <p className="filter-bar__advanced-keywords-label"><b>Keywords:</b></p>
+                            <div className="filter-bar__advanced-keywords-list"><br/>
                                 {uniqueKeywords.map((keyword) => (
                                     <label key={keyword}>
                                         {countModelsForKeyword(keyword) === 0 ? (
@@ -127,7 +127,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                                                 value={keyword}
                                                 checked={false}
                                                 disabled
-                                                className="disabled_checkbox"
+                                                className="filter-bar__checkbox--disabled"
                                             />
                                         ) : (
                                             <input
@@ -142,7 +142,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                                 ))}
                             </div>
                         </div>
-                        <div className="advancedFilter_searchBars">
+                        <div className="filter-bar__advanced__searches">
                             <TextField
                                 sx={{
                                     marginTop: '2rem',

@@ -6,7 +6,7 @@ export const parseModifications = (data: string): string => {
     let inUl = false;
 
     if (lines) {
-        for (let line of lines) {
+        for (const line of lines) {
             if (line.startsWith('### ')) {
                 // Extract the h3 content
                 const h3 = line.substring(4);

@@ -41,42 +41,42 @@ const ModelsDetailPage: React.FC = () => {
 
     return (
         <>
-            <div className="header">
-                <h1 className="title"><span className="subtitle">Model Repository/</span>BIODIVINE</h1>
-                <Link to="/models"><button>Back To Model Repository</button></Link>
+            <div className="page__header">
+                <h1 className="page__title"><span className="page__subtitle">Model Repository/</span>BIODIVINE</h1>
+                <Link to="/models"><button className="page__button">Back To Model Repository</button></Link>
             </div>
-            <div className="content">
+            <div className="page__content">
                 {isLoading ? (
                     <CircularProgress />
                 ) : (
                     <>
-                        <h2>{model?.name}</h2>
+                        <h2 className="page__content-title">{model?.name}</h2>
                         <div>
                             <ul>
                                 <li><b>Variables</b>: {model?.variables}</li>
                                 <li><b>Inputs</b>: {model?.inputs}</li>
                                 <li><b>Regulations</b>: {model?.regulations}</li>
-                                <li><b>Publication</b>: <a href={model?.urlPublication}>{model?.urlPublication}</a></li>
-                                <li><b>Source</b>: <a href={model?.urlModel}>{model?.urlModel}</a></li>
+                                <li><b>Publication</b>: <a className="page__link" href={model?.urlPublication}>{model?.urlPublication}</a></li>
+                                <li><b>Source</b>: <a className="page__link" href={model?.urlModel}>{model?.urlModel}</a></li>
                                 <li><b>Keywords</b>: {model?.keywords.join(', ')}</li>
                             </ul>
                         </div>
                         <div dangerouslySetInnerHTML={{ __html: modifications}}></div>
-                        <h3>Model Citation</h3>
-                        <div className="code_block">
-                            <p className="bib_text" style={{ whiteSpace: 'pre-wrap' }}>
+                        <h3 className="page__content-subtitle">Model Citation</h3>
+                        <div className="page__code-block">
+                            <p className="details-page__bib-text" style={{ whiteSpace: 'pre-wrap' }}>
                                 {model!.bib}
                             </p>
                         </div>
-                        <h3>Model Viewer</h3>
-                        <div className="modelViewerComponent">
+                        <h3 className="page__content-subtitle">Model Viewer</h3>
+                        <div className="details-page__model-viewer">
                             <ModelViewer modelData={fileData} />
                         </div>
-                        <div className="mobileViewerComponent">
-                            <button className="newTab_button" onClick={openInNewTab}>Open model view in new tab</button>
+                        <div className="details-page__mobile-model-viewer">
+                            <button className="page__button details-page__newTab-button" onClick={openInNewTab}>Open model view in new tab</button>
                         </div>
 
-                        <Link to="/models"><button>Go back to models page</button></Link>
+                        <Link to="/models"><button className="page__button">Go back to models page</button></Link>
                     </>
                 )}
             </div>
