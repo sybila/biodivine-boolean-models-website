@@ -13,12 +13,18 @@ git clone https://github.com/sybila/biodivine-boolean-models-website.git
 ```
 
 ## Configuration
-Before starting, configure the environment variables required for the application. Create a `.env` file in the backend directory of project with the following content:
-
+Before starting, configure the environment variables required for the application. In the project directory there are two .env files. One in backend directory, other in frontend directory. These files need to be renamed from .env.example to .env, so variables can be accessed. These example files should look like this:
 ```
+# Backend .env file
 PORT=3001
 DATABASE_URL="postgresql://postgres:postgres@localhost:5555/my-db?schema=public"
 ```
+and
+```
+# Frontend .env file
+VITE_BACKEND_PORT=3001
+```
+The only important thing is to keep PORT and VITE_BACKEND_PORT with same values (to ensure fetching from the correct backend URL). DATABASE_URL can be modified, but then docker-compose.yml file needs to be edited as well (for this reason, it is recommended not to modify the DATABASE_URL).
 
 ## Setting up the Database
 First, run Docker desktop and wait for it to run.
@@ -60,19 +66,7 @@ Open second terminal window and navigate to frontend directory:
 ```
 cd frontend
 ```
-There is need to adjust one file inside the frontend folder. Go to /frontend/src/services/base.ts file and adjust the file from this:
-```
-const axiosInstance = axios.create({
-    baseURL: '${BACKEND_URL}',
-});
-```
-to this:
-```
-const axiosInstance = axios.create({
-    baseURL: 'http://localhost:[port]',
-});
-```
-Replace [port] in the baseURL based on the PORT variable in .env file (http://localhost:3001 for this example).
+
 ### 1. Install dependencies
 ```
 npm install
