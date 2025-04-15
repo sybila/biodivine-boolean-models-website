@@ -1,4 +1,4 @@
-import cytoscape from 'cytoscape/dist/cytoscape.esm.js';
+import cytoscape from 'cytoscape';
 
 export let EdgeMonotonicity = {
     unspecified: 'unspecified',
