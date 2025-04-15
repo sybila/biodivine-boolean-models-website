@@ -30,7 +30,7 @@ app.use((_req, res) => {
         error: 'No matching endpoint was found.',
     };
 
-    return res.status(404).send(response);
+    res.status(404).send(response);
 });
 
 if (env.NODE_ENV !== 'test') {
