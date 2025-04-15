@@ -13,7 +13,7 @@ const ModelsDetailPage: React.FC = () => {
     const { data: model, isLoading } = useQuery({
         queryKey: ['model'],
         queryFn: () => ModelsApi.getSpecific(id!),
-        cacheTime: 0,
+        gcTime: 0,
     });
 
     const openInNewTab = () => {

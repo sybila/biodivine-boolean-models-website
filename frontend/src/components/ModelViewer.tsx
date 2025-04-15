@@ -13,7 +13,7 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ modelData }) => {
     const { data: model } = useQuery({
         queryKey: ['model'],
         queryFn: () => ModelsApi.getSpecific(id!),
-        cacheTime: 0,
+        gcTime: 0,
     });
 
     useEffect(() => {
