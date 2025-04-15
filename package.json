@@ -4,5 +4,12 @@
   "workspaces": [
     "frontend",
     "backend"
-  ]
+  ],
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0"
+  },
+  "scripts": {
+    "prettier": "prettier --config '.prettierrc' --ignore-path '.prettierignore' 'frontend/**/*.{ts,tsx,js,jsx,css,json}' 'backend/**/*.{ts,js,json}' --write"
+  }
 }
