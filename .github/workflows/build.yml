@@ -1,0 +1,71 @@
+name: Build
+
+on: push
+
+jobs:
+  backend-build:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup database
+        run:
+          npx prisma generate
+
+      - name: Run type check
+        run:
+          npm run check
+
+  frontend-build:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run type check
+        run:
+          npm run build
+
+  prettier:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run type check
+        run:
+          npm run prettier
