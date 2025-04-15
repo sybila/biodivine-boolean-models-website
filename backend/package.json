@@ -4,6 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "check": "tsc",
         "cold-start": "npm run migrate && npm run seed && npm run start",
         "migrate": "npx prisma migrate dev --name init",
         "start": "ts-node src/index.ts",
