@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { handleErrors, validateId } from "../../validationModels/common";
-import ModelRepository from "../../repositories/model";
+import ModelRepository from '../../repositories/model';
+import { handleErrors, validateId } from '../../validationModels/common';
 
 export const readSpecificModelController = async (req: Request, res: Response) => {
     try {

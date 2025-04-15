@@ -1,7 +1,7 @@
-import client from "../client";
-import {Result} from "@badrap/result";
-import {ModelUpdateData} from "../types/data";
-import {ModelResult} from "../types/return";
+import { Result } from '@badrap/result';
+import client from '../client';
+import { ModelUpdateData } from '../types/data';
+import { ModelResult } from '../types/return';
 
 const updateModel = async (data: ModelUpdateData): ModelResult => {
     try {
@@ -11,7 +11,7 @@ const updateModel = async (data: ModelUpdateData): ModelResult => {
                 data: { ...data },
             });
             return Result.ok(model);
-        })
+        });
     } catch (e) {
         return Result.err(e as Error);
     }

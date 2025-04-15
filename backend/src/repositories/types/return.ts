@@ -1,7 +1,7 @@
-import DbResult from "./common";
-import { Model } from "@prisma/client";
+import { Model } from '@prisma/client';
+import DbResult from './common';
 
-type DbModel = DbResult<Model>
+type DbModel = DbResult<Model>;
 
 export type ModelResult = DbModel;
 export type ModelReadSpecificResult = DbResult<Model>;

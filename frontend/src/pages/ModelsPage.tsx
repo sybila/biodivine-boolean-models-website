@@ -1,26 +1,28 @@
-import React, {useEffect, useMemo} from 'react';
-import {Link} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
-import {ModelsApi} from "../services";
-import {FilterOptions} from "../types/data";
-import {CircularProgress, Pagination} from "@mui/material";
-import {useRecoilState} from "recoil";
+import { CircularProgress, Pagination } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import React, { useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import FilterBar from '../components/FilterBar';
+import useFilteredModels from '../hooks/useFilteredModels';
+import { ModelsApi } from '../services';
 import {
     filterChangedAtom,
     pageNumberAtom,
     searchBibJournalQueryAtom,
     searchBibYearQueryAtom,
-    searchNameQueryAtom, selectedKeywordsAtom, showAdvancedAFiltersAtom,
+    searchNameQueryAtom,
+    selectedKeywordsAtom,
+    showAdvancedAFiltersAtom,
     sortByAtom,
-    sortOrderAtom
-} from "../state/filtersAtom";
-import useFilteredModels from "../hooks/useFilteredModels";
-import FilterBar from "../components/FilterBar";
+    sortOrderAtom,
+} from '../state/filtersAtom';
+import { FilterOptions } from '../types/data';
 
 const ModelsPage: React.FC = () => {
     const { data: models, isLoading } = useQuery({
         queryKey: ['models'],
-        queryFn: () => ModelsApi.getAll()
+        queryFn: () => ModelsApi.getAll(),
     });
 
     const [searchNameQuery, setSearchNameQuery] = useRecoilState<string>(searchNameQueryAtom);
@@ -39,8 +41,8 @@ const ModelsPage: React.FC = () => {
         searchBibYearQuery,
         sortBy,
         sortOrder,
-        selectedKeywords
-    }
+        selectedKeywords,
+    };
 
     const filteredModels = useFilteredModels(models!, filterOptions);
     const numberOfModels = filteredModels.length;
@@ -58,7 +60,7 @@ const ModelsPage: React.FC = () => {
     const toggleAdvancedFilters = () => {
         setShowAdvancedFilters(!showAdvancedFilters);
         setFilterChanged(!showAdvancedFilters);
-    }
+    };
 
     const uniqueKeywords = useMemo(() => {
         return [...new Set(models?.flatMap((model) => model.keywords))];
@@ -95,8 +97,12 @@ const ModelsPage: React.FC = () => {
     return (
         <>
             <div className="page__header">
-                <h1 className="page__title"><span className="page__subtitle">Model Repository/</span>BIODIVINE</h1>
-                <Link to="/"><button className="page__button">About Us</button></Link>
+                <h1 className="page__title">
+                    <span className="page__subtitle">Model Repository/</span>BIODIVINE
+                </h1>
+                <Link to="/">
+                    <button className="page__button">About Us</button>
+                </Link>
             </div>
             <FilterBar
                 searchNameQuery={searchNameQuery}
@@ -117,7 +123,8 @@ const ModelsPage: React.FC = () => {
                 toggleSortOrder={toggleSortOrder}
                 showAdvancedFilters={showAdvancedFilters}
                 toggleAdvancedFilters={toggleAdvancedFilters}
-                handleResetFilters={handleResetFilters} />
+                handleResetFilters={handleResetFilters}
+            />
             {isLoading ? (
                 <CircularProgress />
             ) : (
@@ -131,21 +138,39 @@ const ModelsPage: React.FC = () => {
                                         <h4 className="models-page__item-title">{model.name}</h4>
                                         <div className="models-page__item-details">
                                             <div className="models-page__item-details-data">
-                                                <b>Keywords:</b> {model.keywords.map((keyword, index) => (
-                                                <span
-                                                    key={index}
-                                                    className={selectedKeywords.includes(keyword) ? "models-page__keyword--selected models-page__keyword" : "models-page__keyword"}
-                                                    onClick={() => handleKeywordChange(keyword)}>[{keyword}]
-                                                </span>))}
+                                                <b>Keywords:</b>{' '}
+                                                {model.keywords.map((keyword, index) => (
+                                                    <span
+                                                        key={index}
+                                                        className={
+                                                            selectedKeywords.includes(keyword)
+                                                                ? 'models-page__keyword--selected models-page__keyword'
+                                                                : 'models-page__keyword'
+                                                        }
+                                                        onClick={() => handleKeywordChange(keyword)}
+                                                    >
+                                                        [{keyword}]
+                                                    </span>
+                                                ))}
                                             </div>
                                             <div className="models-page__item-details-numbers">
-                                                <p className="models-page__item-details-data"><b>Inputs:</b> {model.inputs}</p>
-                                                <p className="models-page__item-details-data"><b>Regulations:</b> {model.regulations}</p>
-                                                <p className="models-page__item-details-data"><b>Variables:</b> {model.variables}</p>
+                                                <p className="models-page__item-details-data">
+                                                    <b>Inputs:</b> {model.inputs}
+                                                </p>
+                                                <p className="models-page__item-details-data">
+                                                    <b>Regulations:</b> {model.regulations}
+                                                </p>
+                                                <p className="models-page__item-details-data">
+                                                    <b>Variables:</b> {model.variables}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
-                                    <Link className="models-page__details-link" to={`/models/${model.id}`}><button className="page__button models-page__details-button">Details {'>'}</button></Link>
+                                    <Link className="models-page__details-link" to={`/models/${model.id}`}>
+                                        <button className="page__button models-page__details-button">
+                                            Details {'>'}
+                                        </button>
+                                    </Link>
                                 </div>
                             </li>
                         ))}
@@ -159,7 +184,7 @@ const ModelsPage: React.FC = () => {
                             display: 'flex',
                             justifyContent: 'center',
                             width: '70vw',
-                            margin: '2rem 0 3rem 8.5rem'
+                            margin: '2rem 0 3rem 8.5rem',
                         }}
                         sx={{
                             '& .MuiPaginationItem-page': {
@@ -171,20 +196,20 @@ const ModelsPage: React.FC = () => {
                                 },
                                 '&:hover': {
                                     backgroundColor: '#d05d5d',
-                                    opacity: '.7'
+                                    opacity: '.7',
                                 },
                             },
                             '@media only screen and (max-width: 767px)': {
                                 width: '100vw',
-                                margin: '0 auto 1rem auto'
-                            }
+                                margin: '0 auto 1rem auto',
+                            },
                         }}
                         onChange={(_, value) => setPageNumber(value)}
                     />
                 </div>
             )}
         </>
-    )
+    );
 };
 
 export default ModelsPage;

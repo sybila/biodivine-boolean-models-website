@@ -23,17 +23,15 @@ export const parseModifications = (data: string): string => {
                     let listItem = line.substring(2);
                     for (const part of quotedParts) {
                         const textInsideQuotes = part.slice(1, -1);
-                        listItem = listItem.replace(
-                            part,
-                            `<b>${textInsideQuotes}</b>`);
+                        listItem = listItem.replace(part, `<b>${textInsideQuotes}</b>`);
                     }
-                    formattedMarkup += `<li>${listItem}</li>`
+                    formattedMarkup += `<li>${listItem}</li>`;
                 } else {
                     formattedMarkup += `<li>${line.substring(2)}</li>`;
                 }
             } else {
                 if (inUl) {
-                    formattedMarkup += `</ul>`
+                    formattedMarkup += `</ul>`;
                     inUl = false;
                 }
                 // Extract the content for the <p> element
@@ -42,10 +40,7 @@ export const parseModifications = (data: string): string => {
                     let pContent = line;
                     for (const part of quotedPartsInP) {
                         const textInsideQuotes = part.slice(1, -1);
-                        pContent = pContent.replace(
-                            part,
-                            `<b>${textInsideQuotes}</b>`
-                        );
+                        pContent = pContent.replace(part, `<b>${textInsideQuotes}</b>`);
                     }
                     formattedMarkup += `<p>${pContent}</p>`;
                 } else {
@@ -56,4 +51,4 @@ export const parseModifications = (data: string): string => {
     }
 
     return formattedMarkup;
-}
+};

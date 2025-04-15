@@ -1,11 +1,11 @@
-import express from 'express';
+import bodyParser from 'body-parser';
 import cors from 'cors';
-import { env } from 'process';
-import { ApiResponse } from './types';
-import modelRouter from "./routes/modelRoutes";
-import bodyParser from "body-parser";
-import webhookRouter from "./routes/webhookRoutes";
+import express from 'express';
 import morgan from 'morgan';
+import { env } from 'process';
+import modelRouter from './routes/modelRoutes';
+import webhookRouter from './routes/webhookRoutes';
+import { ApiResponse } from './types';
 
 const app = express();
 const port = env.PORT ?? 3000;
@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Logging
-app.use(morgan('combined'))
+app.use(morgan('combined'));
 
 // My implemented routers
 app.use(modelRouter);
@@ -35,9 +35,7 @@ app.use((_req, res) => {
 
 if (env.NODE_ENV !== 'test') {
     app.listen(port, () => {
-        console.log(
-            `[${new Date().toISOString()}] RESTful API for model repository is listening on port ${port}`
-        );
+        console.log(`[${new Date().toISOString()}] RESTful API for model repository is listening on port ${port}`);
     });
 }
 

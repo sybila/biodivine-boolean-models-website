@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import ModelRepository from "../../repositories/model";
-import {handleErrors, validateModelCreateBody} from "../../validationModels/common";
+import ModelRepository from '../../repositories/model';
+import { handleErrors, validateModelCreateBody } from '../../validationModels/common';
 
 export const createModelController = async (req: Request, res: Response) => {
     try {
@@ -10,4 +10,4 @@ export const createModelController = async (req: Request, res: Response) => {
     } catch (e) {
         return handleErrors(e, res);
     }
-}
+};
