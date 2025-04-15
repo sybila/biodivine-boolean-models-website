@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {Link, useParams} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
-import {ModelsApi} from "../services";
-import ModelViewer from "../components/ModelViewer";
-import {parseModifications} from "../utils/stringUtils";
 import { CircularProgress } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import ModelViewer from '../components/ModelViewer';
+import { ModelsApi } from '../services';
+import { parseModifications } from '../utils/stringUtils';
 
 const ModelsDetailPage: React.FC = () => {
     const { id } = useParams();
@@ -13,7 +13,7 @@ const ModelsDetailPage: React.FC = () => {
     const { data: model, isLoading } = useQuery({
         queryKey: ['model'],
         queryFn: () => ModelsApi.getSpecific(id!),
-        cacheTime: 0
+        cacheTime: 0,
     });
 
     const openInNewTab = () => {
@@ -22,28 +22,32 @@ const ModelsDetailPage: React.FC = () => {
     };
 
     useEffect(() => {
-            const data = model?.modelData;
-            if (data) {
-                try {
-                    const tmp = new Uint8Array((data as unknown as {type: string, data: number[]}).data);
-                    const dataString = new TextDecoder('utf-8').decode(tmp);
-                    setFileData(dataString);
-                } catch (e) {
-                    console.error("error converting", e);
-                }
+        const data = model?.modelData;
+        if (data) {
+            try {
+                const tmp = new Uint8Array((data as unknown as { type: string; data: number[] }).data);
+                const dataString = new TextDecoder('utf-8').decode(tmp);
+                setFileData(dataString);
+            } catch (e) {
+                console.error('error converting', e);
             }
+        }
 
-            const notes = model?.notes;
-            if (notes) {
-                setModifications(parseModifications(notes))
-            }
+        const notes = model?.notes;
+        if (notes) {
+            setModifications(parseModifications(notes));
+        }
     }, [model]);
 
     return (
         <>
             <div className="page__header">
-                <h1 className="page__title"><span className="page__subtitle">Model Repository/</span>BIODIVINE</h1>
-                <Link to="/models"><button className="page__button">Back To Model Repository</button></Link>
+                <h1 className="page__title">
+                    <span className="page__subtitle">Model Repository/</span>BIODIVINE
+                </h1>
+                <Link to="/models">
+                    <button className="page__button">Back To Model Repository</button>
+                </Link>
             </div>
             <div className="page__content">
                 {isLoading ? (
@@ -53,15 +57,33 @@ const ModelsDetailPage: React.FC = () => {
                         <h2 className="page__content-title">{model?.name}</h2>
                         <div>
                             <ul>
-                                <li><b>Variables</b>: {model?.variables}</li>
-                                <li><b>Inputs</b>: {model?.inputs}</li>
-                                <li><b>Regulations</b>: {model?.regulations}</li>
-                                <li><b>Publication</b>: <a className="page__link" href={model?.urlPublication}>{model?.urlPublication}</a></li>
-                                <li><b>Source</b>: <a className="page__link" href={model?.urlModel}>{model?.urlModel}</a></li>
-                                <li><b>Keywords</b>: {model?.keywords.join(', ')}</li>
+                                <li>
+                                    <b>Variables</b>: {model?.variables}
+                                </li>
+                                <li>
+                                    <b>Inputs</b>: {model?.inputs}
+                                </li>
+                                <li>
+                                    <b>Regulations</b>: {model?.regulations}
+                                </li>
+                                <li>
+                                    <b>Publication</b>:{' '}
+                                    <a className="page__link" href={model?.urlPublication}>
+                                        {model?.urlPublication}
+                                    </a>
+                                </li>
+                                <li>
+                                    <b>Source</b>:{' '}
+                                    <a className="page__link" href={model?.urlModel}>
+                                        {model?.urlModel}
+                                    </a>
+                                </li>
+                                <li>
+                                    <b>Keywords</b>: {model?.keywords.join(', ')}
+                                </li>
                             </ul>
                         </div>
-                        <div dangerouslySetInnerHTML={{ __html: modifications}}></div>
+                        <div dangerouslySetInnerHTML={{ __html: modifications }}></div>
                         <h3 className="page__content-subtitle">Model Citation</h3>
                         <div className="page__code-block">
                             <p className="details-page__bib-text" style={{ whiteSpace: 'pre-wrap' }}>
@@ -73,15 +95,19 @@ const ModelsDetailPage: React.FC = () => {
                             <ModelViewer modelData={fileData} />
                         </div>
                         <div className="details-page__mobile-model-viewer">
-                            <button className="page__button details-page__newTab-button" onClick={openInNewTab}>Open model view in new tab</button>
+                            <button className="page__button details-page__newTab-button" onClick={openInNewTab}>
+                                Open model view in new tab
+                            </button>
                         </div>
 
-                        <Link to="/models"><button className="page__button">Go back to models page</button></Link>
+                        <Link to="/models">
+                            <button className="page__button">Go back to models page</button>
+                        </Link>
                     </>
                 )}
             </div>
         </>
-    )
+    );
 };
 
 export default ModelsDetailPage;

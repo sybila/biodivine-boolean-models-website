@@ -1,6 +1,6 @@
-import type { Response} from "express";
-import {z, ZodError} from "zod";
-import {NonexistentRecordError} from "../repositories/types/errors";
+import type { Response } from 'express';
+import { z, ZodError } from 'zod';
+import { NonexistentRecordError } from '../repositories/types/errors';
 export const handleErrors = (e: unknown, res: Response) => {
     if (e instanceof ZodError) {
         const zodErrorResponse = {
@@ -41,18 +41,23 @@ export const validateModelCreateBody = z.object({
     regulations: z.number(),
     notes: z.string(),
     bib: z.string(),
-    modelData: z.instanceof(Buffer)
+    modelData: z.instanceof(Buffer),
 });
 
-export const validateModelUpdateBody = z.object({
-    name: z.string().optional(),
-    urlPublication: z.string().url().optional(),
-    urlModel: z.string().url().optional(),
-    keywords: z.array(z.string()).optional(),
-    notes: z.string().optional(),
-}).refine(data => {
-    // Check if at least one of the properties is present and not undefined
-    return Object.values(data).some(value => value !== undefined);
-}, {
-    message: "At least one field must be provided",
-});
+export const validateModelUpdateBody = z
+    .object({
+        name: z.string().optional(),
+        urlPublication: z.string().url().optional(),
+        urlModel: z.string().url().optional(),
+        keywords: z.array(z.string()).optional(),
+        notes: z.string().optional(),
+    })
+    .refine(
+        (data) => {
+            // Check if at least one of the properties is present and not undefined
+            return Object.values(data).some((value) => value !== undefined);
+        },
+        {
+            message: 'At least one field must be provided',
+        }
+    );

@@ -2,16 +2,12 @@ import { useEffect, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import bibtexParse from 'bibtex-parse';
-import {BibTexItem, FilterOptions, Model} from "../types/data";
+import { BibTexItem, FilterOptions, Model } from '../types/data';
 
-const useFilteredModels = (models: Model[], {
-    searchNameQuery,
-    searchBibJournalQuery,
-    searchBibYearQuery,
-    sortBy,
-    sortOrder,
-    selectedKeywords
-}: FilterOptions) => {
+const useFilteredModels = (
+    models: Model[],
+    { searchNameQuery, searchBibJournalQuery, searchBibYearQuery, sortBy, sortOrder, selectedKeywords }: FilterOptions
+) => {
     const [filteredModels, setFilteredModels] = useState<Model[]>([]);
 
     useEffect(() => {
@@ -22,8 +18,9 @@ const useFilteredModels = (models: Model[], {
             return field ? field.value : undefined;
         };
 
-        const filtered = models.filter(model => {
-            const keywordMatch = selectedKeywords.length === 0 || selectedKeywords.every(keyword => model.keywords.includes(keyword));
+        const filtered = models.filter((model) => {
+            const keywordMatch =
+                selectedKeywords.length === 0 || selectedKeywords.every((keyword) => model.keywords.includes(keyword));
             const nameMatch = model.name.toLowerCase().includes(searchNameQuery.toLowerCase());
 
             let journalMatch = false;
@@ -78,18 +75,9 @@ const useFilteredModels = (models: Model[], {
         });
 
         setFilteredModels(sortedModels);
-    }, [
-        models,
-        searchNameQuery,
-        searchBibJournalQuery,
-        searchBibYearQuery,
-        sortBy,
-        sortOrder,
-        selectedKeywords
-    ]);
+    }, [models, searchNameQuery, searchBibJournalQuery, searchBibYearQuery, sortBy, sortOrder, selectedKeywords]);
 
     return filteredModels;
 };
 
 export default useFilteredModels;
-

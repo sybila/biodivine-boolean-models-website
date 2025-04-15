@@ -1,13 +1,13 @@
-import { Router} from "express";
-import {readAllModelsController, readSpecificModelController} from "../controllers/model/read";
+import { Router } from 'express';
+import { readAllModelsController, readSpecificModelController } from '../controllers/model/read';
 // import {deleteModelController} from "../controllers/model/delete";
 // import {updateModelController} from "../controllers/model/update";
 // import {createModelController} from "../controllers/model/create";
 
 const modelRouter = Router();
 
-const routerModel = "/models";
-const routerModelWithId = "/models/:id";
+const routerModel = '/models';
+const routerModelWithId = '/models/:id';
 
 modelRouter.get(routerModel, readAllModelsController);
 modelRouter.get(routerModelWithId, readSpecificModelController);

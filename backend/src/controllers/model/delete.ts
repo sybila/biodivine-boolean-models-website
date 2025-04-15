@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import ModelRepository from "../../repositories/model";
-import {handleErrors, validateId} from "../../validationModels/common";
+import ModelRepository from '../../repositories/model';
+import { handleErrors, validateId } from '../../validationModels/common';
 export const deleteModelController = async (req: Request, res: Response) => {
     try {
         const validatedId = validateId.parse(req.params);
@@ -9,4 +9,4 @@ export const deleteModelController = async (req: Request, res: Response) => {
     } catch (e) {
         return handleErrors(e, res);
     }
-}
+};

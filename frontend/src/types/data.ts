@@ -1,23 +1,23 @@
 export type Model = {
-    id: string,
-    name: string,
-    urlPublication: string,
-    urlModel: string,
-    keywords: string[],
-    variables: number,
-    inputs: number,
-    regulations: number,
-    notes: string,
-    bib: string,
-    modelData: Buffer
-}
+    id: string;
+    name: string;
+    urlPublication: string;
+    urlModel: string;
+    keywords: string[];
+    variables: number;
+    inputs: number;
+    regulations: number;
+    notes: string;
+    bib: string;
+    modelData: Buffer;
+};
 
 export type BibTexItem = {
-    name: string,
-    value: string,
-    datatype: string,
-    raw: string
-}
+    name: string;
+    value: string;
+    datatype: string;
+    raw: string;
+};
 
 export type FilterOptions = {
     searchNameQuery: string;
@@ -26,7 +26,7 @@ export type FilterOptions = {
     sortBy: string; // Replace with actual sort options
     sortOrder: string;
     selectedKeywords: string[];
-}
+};
 
 export type FilterBarProps = {
     searchNameQuery: string;
@@ -37,7 +37,7 @@ export type FilterBarProps = {
     setSearchBibYearQuery: (value: string) => void;
     sortBy: string;
     setSortBy: (value: string) => void;
-    filterChanged: boolean,
+    filterChanged: boolean;
     setFilterChanged: (value: boolean) => void;
     sortOrder: string;
     uniqueKeywords: string[];
@@ -48,4 +48,4 @@ export type FilterBarProps = {
     showAdvancedFilters: boolean;
     toggleAdvancedFilters: () => void;
     handleResetFilters: () => void;
-}
+};

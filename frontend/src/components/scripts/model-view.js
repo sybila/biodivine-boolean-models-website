@@ -1,5 +1,5 @@
-import {CytoscapeEditor} from "./CytoscapeEditor.js";
-import {LiveModel} from "./LiveModel.js";
+import { CytoscapeEditor } from './CytoscapeEditor.js';
+import { LiveModel } from './LiveModel.js';
 
 /**
  * @param {*} container The HTML element where the model layout should be rendered (a <div> is fine).

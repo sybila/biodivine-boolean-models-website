@@ -9,5 +9,5 @@ export const modelReadProperties = {
     regulations: true,
     notes: true,
     bib: true,
-    modelData: true
-}
+    modelData: true,
+};

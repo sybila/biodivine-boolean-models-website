@@ -1,6 +1,6 @@
-import client from './repositories/client';
 import fs from 'fs/promises';
 import path from 'path';
+import client from './repositories/client';
 
 const MODELS_DIR_PATH = path.join(__dirname, '..', '..', 'models'); // Currently inside backend/src/ - that is why .. ..
 const METADATA_FILE_NAME = 'metadata.json';
@@ -26,7 +26,9 @@ export const seed = async () => {
                             data: {
                                 name: metadata.name,
                                 urlPublication: metadata['url-publication'],
-                                urlModel: Array.isArray(metadata['url-model']) ? metadata['url-model'][0] : metadata['url-model'],
+                                urlModel: Array.isArray(metadata['url-model'])
+                                    ? metadata['url-model'][0]
+                                    : metadata['url-model'],
                                 keywords: metadata.keywords,
                                 variables: metadata.variables,
                                 inputs: metadata.inputs,
@@ -51,4 +53,4 @@ export const seed = async () => {
     } finally {
         await client.$disconnect();
     }
-}
+};
