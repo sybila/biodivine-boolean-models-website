@@ -1,0 +1,8 @@
+{
+  "name": "biodivine-boolean-models-website",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}
