@@ -10,7 +10,7 @@ export type ApiResponse<T> =
           error: string;
       };
 
-export type GitPushEvent = {
+export interface GitPushEvent {
     object_kind: string;
     event_name: string;
     before: string;
@@ -65,4 +65,4 @@ export type GitPushEvent = {
         removed: string[];
     }[];
     total_commits_count: number;
-};
+}

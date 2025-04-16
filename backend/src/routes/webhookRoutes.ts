@@ -20,7 +20,7 @@ webhookRouter.post(webhookRoute, (req: Request, res: Response) => {
             if (changes.ref === 'refs/heads/main') {
                 const modelChanges = changes.commits[0].added.concat(changes.commits[0].modified);
                 if (modelChanges.some((change: string) => change.startsWith('models/'))) {
-                    seed().then((_) => {
+                    seed().then(() => {
                         res.status(200).send('Models uploaded successfully!');
                     });
                 }

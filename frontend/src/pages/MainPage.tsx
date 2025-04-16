@@ -1,7 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-const MainPage: React.FC = () => {
+const MainPage = () => {
     return (
         <>
             <div className="page__header">
@@ -44,7 +43,8 @@ const MainPage: React.FC = () => {
                     <span className="page__code">bnet</span> / <span className="page__code">aeon</span> /&nbsp;
                     <span className="page__code">sbml</span> source files as well as JSON metadata file and a
                     human-friendly readme. There is also a <span className="page__code">models/summary.csv</span> file
-                    with the full list of models. Alternatively, you can download one of the "edition archives" in the{' '}
+                    with the full list of models. Alternatively, you can download one of the &quot;edition
+                    archives&quot; in the{' '}
                     <a className="page__link" href="https://github.com/sybila/biodivine-boolean-models/releases">
                         repository releases
                     </a>
@@ -55,9 +55,9 @@ const MainPage: React.FC = () => {
                 <div className="main-page__note">
                     <p className="main-page__note-text">
                         Note on model inputs (source nodes): By default, all inputs (entities with no incoming
-                        regulations) are represented as "free" variables (i.e. their update function is omitted).
-                        However, this is not supported by all tools. If you need to, you can change this input
-                        representation when generating a custom "edition" of the dataset (see below).
+                        regulations) are represented as &quot;free&quot; variables (i.e. their update function is
+                        omitted). However, this is not supported by all tools. If you need to, you can change this input
+                        representation when generating a custom &quot;edition&quot; of the dataset (see below).
                     </p>
                 </div>
                 <div className="main-page__note">
@@ -99,10 +99,10 @@ const MainPage: React.FC = () => {
                 <div className="main-page__note">
                     <p className="main-page__note-text">
                         Random input valuations: If you select <span className="page__code">random</span> input values,
-                        you'll be given the option to specify how many samples should be taken for each model (assuming
-                        the model has enough valuations). Each sample is unique and is saved as an individual model
-                        file. Furthermore, you will be able to select what random seed should be used to initialize the
-                        generator for each model. As such, the process should be fully reproducible.
+                        you&apos;ll be given the option to specify how many samples should be taken for each model
+                        (assuming the model has enough valuations). Each sample is unique and is saved as an individual
+                        model file. Furthermore, you will be able to select what random seed should be used to
+                        initialize the generator for each model. As such, the process should be fully reproducible.
                     </p>
                 </div>
                 <p>
@@ -122,11 +122,12 @@ const MainPage: React.FC = () => {
                         len(variables) {'<'} 10 and len(inputs) {'>'} 5<br />
                         # Models that are on GINsim but not on CellCollective:
                         <br />
-                        'ginsim' in metadata['keywords'] and not 'cellcollective' in metadata['keywords']
+                        &apos;ginsim&apos; in metadata[&apos;keywords&apos;] and not &apos;cellcollective&apos; in
+                        metadata[&apos;keywords&apos;]
                         <br />
                         # Models with variable ERK that are originally multi-valued.
                         <br />
-                        'ERK' in variables and 'multi-valued' in metadata['keywords']
+                        &apos;ERK&apos; in variables and &apos;multi-valued&apos; in metadata[&apos;keywords&apos;]
                     </p>
                 </div>
                 <h3 className="page__content-subtitle">Contributing</h3>
@@ -163,7 +164,7 @@ const MainPage: React.FC = () => {
                 <div>
                     <ul>
                         <li>
-                            GINsim model export automatically "hides" some logical errors in models (
+                            GINsim model export automatically &quot;hides&quot; some logical errors in models (
                             <a
                                 className="page__link"
                                 href="(https://github.com/sybila/biodivine-boolean-models/issues/57)"

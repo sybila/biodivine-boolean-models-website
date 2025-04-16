@@ -12,7 +12,7 @@ export const readSpecificModelController = async (req: Request, res: Response) =
     }
 };
 
-export const readAllModelsController = async (req: Request, res: Response) => {
+export const readAllModelsController = async (_req: Request, res: Response) => {
     try {
         const allModels = await ModelRepository.read.readAll();
         res.status(200).send({ data: allModels.unwrap() });

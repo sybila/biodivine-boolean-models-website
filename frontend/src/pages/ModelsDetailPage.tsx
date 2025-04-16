@@ -1,12 +1,12 @@
 import { CircularProgress } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ModelViewer from '../components/ModelViewer';
 import { ModelsApi } from '../services';
 import { parseModifications } from '../utils/stringUtils';
 
-const ModelsDetailPage: React.FC = () => {
+const ModelsDetailPage = () => {
     const { id } = useParams();
     const [fileData, setFileData] = useState<string>('');
     const [modifications, setModifications] = useState<string>('');

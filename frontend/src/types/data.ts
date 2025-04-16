@@ -1,4 +1,4 @@
-export type Model = {
+export interface Model {
     id: string;
     name: string;
     urlPublication: string;
@@ -10,25 +10,25 @@ export type Model = {
     notes: string;
     bib: string;
     modelData: Buffer;
-};
+}
 
-export type BibTexItem = {
+export interface BibTexItem {
     name: string;
     value: string;
     datatype: string;
     raw: string;
-};
+}
 
-export type FilterOptions = {
+export interface FilterOptions {
     searchNameQuery: string;
     searchBibJournalQuery: string;
     searchBibYearQuery: string;
     sortBy: string; // Replace with actual sort options
     sortOrder: string;
     selectedKeywords: string[];
-};
+}
 
-export type FilterBarProps = {
+export interface FilterBarProps {
     searchNameQuery: string;
     setSearchNameQuery: (value: string) => void;
     searchBibJournalQuery: string;
@@ -48,4 +48,4 @@ export type FilterBarProps = {
     showAdvancedFilters: boolean;
     toggleAdvancedFilters: () => void;
     handleResetFilters: () => void;
-};
+}
