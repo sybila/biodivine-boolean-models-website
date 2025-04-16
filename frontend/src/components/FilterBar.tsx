@@ -3,7 +3,7 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SouthOutlinedIcon from '@mui/icons-material/SouthOutlined';
 import { Button, IconButton, MenuItem, Select, TextField } from '@mui/material';
-import React from 'react';
+import * as React from 'react';
 import { FilterBarProps } from '../types/data';
 
 const FilterBar: React.FC<FilterBarProps> = ({

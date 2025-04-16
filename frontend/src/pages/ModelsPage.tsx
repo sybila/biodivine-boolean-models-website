@@ -1,6 +1,6 @@
 import { CircularProgress, Pagination } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import FilterBar from '../components/FilterBar';
@@ -19,7 +19,7 @@ import {
 } from '../state/filtersAtom';
 import { FilterOptions } from '../types/data';
 
-const ModelsPage: React.FC = () => {
+const ModelsPage = () => {
     const { data: models, isLoading } = useQuery({
         queryKey: ['models'],
         queryFn: () => ModelsApi.getAll(),

@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ModelsApi } from '../services';
 // @ts-expect-error - js/ts type problem
 import { show_model } from './scripts/model-view.js';
 
-type ModelViewerProps = {
+interface ModelViewerProps {
     modelData?: string;
-};
-const ModelViewer: React.FC<ModelViewerProps> = ({ modelData }) => {
+}
+const ModelViewer = ({ modelData }: ModelViewerProps) => {
     const { id } = useParams();
     const { data: model } = useQuery({
         queryKey: ['model'],

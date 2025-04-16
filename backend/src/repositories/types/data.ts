@@ -1,8 +1,8 @@
-export type ModelID = {
+export interface ModelID {
     id: string;
-};
+}
 
-export type ModelCreateData = {
+export interface ModelCreateData {
     name: string;
     urlPublication: string;
     urlModel: string;
@@ -13,7 +13,7 @@ export type ModelCreateData = {
     notes: string;
     bib: string;
     modelData: Buffer;
-};
+}
 
 export type ModelUpdateData = ModelID & {
     name?: string;
