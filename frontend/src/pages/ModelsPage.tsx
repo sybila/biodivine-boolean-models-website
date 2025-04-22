@@ -140,7 +140,7 @@ const ModelsPage = () => {
                                             <div className="models-page__item-details-data">
                                                 <b>Keywords:</b>{' '}
                                                 {model.keywords.map((keyword, index) => (
-                                                    <span
+                                                    <button
                                                         key={index}
                                                         className={
                                                             selectedKeywords.includes(keyword)
@@ -150,7 +150,7 @@ const ModelsPage = () => {
                                                         onClick={() => handleKeywordChange(keyword)}
                                                     >
                                                         [{keyword}]
-                                                    </span>
+                                                    </button>
                                                 ))}
                                             </div>
                                             <div className="models-page__item-details-numbers">

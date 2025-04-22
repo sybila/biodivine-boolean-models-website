@@ -293,6 +293,14 @@ ul {
     text-decoration: underline;
     cursor: pointer;
     margin: 0 0.2rem;
+
+    /* make it not a button */
+    border: none;
+    background: none;
+    padding: 0;
+    font-family: inherit;
+    color: inherit;
+    font-size: inherit;
 }
 
 .filter-bar__actions {
