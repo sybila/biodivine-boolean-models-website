@@ -1,9 +1,9 @@
 -- CreateTable
 CREATE TABLE "Model" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "urlPublication" TEXT NOT NULL,
-    "urlModel" TEXT NOT NULL,
+    "urlModel" TEXT[],
     "keywords" TEXT[],
     "variables" INTEGER NOT NULL,
     "inputs" INTEGER NOT NULL,

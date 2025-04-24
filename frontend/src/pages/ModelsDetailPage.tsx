@@ -11,7 +11,7 @@ const ModelsDetailPage = () => {
     const [fileData, setFileData] = useState<string>('');
     const [modifications, setModifications] = useState<string>('');
     const { data: model, isLoading } = useQuery({
-        queryKey: ['model'],
+        queryKey: ['model', id],
         queryFn: () => ModelsApi.getSpecific(id!),
         gcTime: 0,
     });
@@ -73,10 +73,27 @@ const ModelsDetailPage = () => {
                                     </a>
                                 </li>
                                 <li>
-                                    <b>Source</b>:{' '}
-                                    <a className="page__link" href={model?.urlModel}>
-                                        {model?.urlModel}
-                                    </a>
+                                    {model?.urlModel.length == 1 ? (
+                                        <>
+                                            <b>Source</b>:{' '}
+                                            <a className="page__link" href={model?.urlModel[0]}>
+                                                {model?.urlModel}
+                                            </a>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <b>Sources</b>:{' '}
+                                            <ul>
+                                                {model?.urlModel.map((source) => (
+                                                    <li key={source}>
+                                                        <a className="page__link" href={source}>
+                                                            {source}
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </>
+                                    )}
                                 </li>
                                 <li>
                                     <b>Keywords</b>: {model?.keywords.join(', ')}
@@ -87,7 +104,7 @@ const ModelsDetailPage = () => {
                         <h3 className="page__content-subtitle">Model Citation</h3>
                         <div className="page__code-block">
                             <p className="details-page__bib-text" style={{ whiteSpace: 'pre-wrap' }}>
-                                {model!.bib}
+                                {model?.bib}
                             </p>
                         </div>
                         <h3 className="page__content-subtitle">Model Viewer</h3>

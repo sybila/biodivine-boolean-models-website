@@ -1,6 +1,7 @@
 import type { Response } from 'express';
 import { z, ZodError } from 'zod';
 import { NonexistentRecordError } from '../repositories/types/errors';
+
 export const handleErrors = (e: unknown, res: Response) => {
     if (e instanceof ZodError) {
         const zodErrorResponse = {
@@ -28,13 +29,13 @@ export const handleErrors = (e: unknown, res: Response) => {
 };
 
 export const validateId = z.object({
-    id: z.string().uuid(),
+    id: z.coerce.number().int().positive(),
 });
 
 export const validateModelCreateBody = z.object({
     name: z.string(),
     urlPublication: z.string(),
-    urlModel: z.string(),
+    urlModel: z.array(z.string()),
     keywords: z.array(z.string()),
     variables: z.number(),
     inputs: z.number(),

@@ -31,9 +31,12 @@ export const seed = () => {
 
             await tx.model.create({
                 data: {
+                    id: metadata.id,
                     name: metadata.name,
                     urlPublication: metadata['url-publication'],
-                    urlModel: Array.isArray(metadata['url-model']) ? metadata['url-model'][0] : metadata['url-model'],
+                    urlModel: Array.isArray(metadata['url-model'])
+                        ? metadata['url-model']
+                        : new Array(metadata['url-model']),
                     keywords: metadata.keywords,
                     variables: metadata.variables,
                     inputs: metadata.inputs,

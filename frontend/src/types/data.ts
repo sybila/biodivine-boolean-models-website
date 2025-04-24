@@ -1,8 +1,8 @@
 export interface Model {
-    id: string;
+    id: number;
     name: string;
     urlPublication: string;
-    urlModel: string;
+    urlModel: string[];
     keywords: string[];
     variables: number;
     inputs: number;
