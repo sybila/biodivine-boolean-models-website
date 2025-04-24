@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import client from './repositories/client';
+import { ModelMetadata, ModelMetadataSchema } from './validationModels/modelMetadata';
 
 const MODELS_DIR_PATH = path.join(__dirname, '..', '..', 'models'); // Currently inside backend/src/ - that is why .. ..
 const METADATA_FILE_NAME = 'metadata.json';
@@ -19,7 +20,8 @@ export const seed = async () => {
 
                 if (!processedFiles.has(aeonFilePath)) {
                     try {
-                        const metadata = JSON.parse(await fs.readFile(metadataFilePath, 'utf-8'));
+                        const metadataContents = await fs.readFile(metadataFilePath, 'utf-8');
+                        const metadata: ModelMetadata = ModelMetadataSchema.parse(JSON.parse(metadataContents));
                         const aeonData = await fs.readFile(aeonFilePath);
 
                         await client.model.create({
