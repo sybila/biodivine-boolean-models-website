@@ -1,11 +1,11 @@
 export interface ModelID {
-    id: string;
+    id: number;
 }
 
 export interface ModelCreateData {
     name: string;
     urlPublication: string;
-    urlModel: string;
+    urlModel: string[];
     keywords: string[];
     variables: number;
     inputs: number;
@@ -18,7 +18,7 @@ export interface ModelCreateData {
 export type ModelUpdateData = ModelID & {
     name?: string;
     urlPublication?: string;
-    urlModel?: string;
+    urlModel?: string[];
     keywords?: string[];
     notes?: string;
 } & AtLeastOne<{
