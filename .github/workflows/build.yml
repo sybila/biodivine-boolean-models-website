@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
-        working-directory: backend
+        working-directory: apps/backend
 
     steps:
       - name: Checkout code
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
-        working-directory: frontend
+        working-directory: apps/frontend
 
     steps:
       - name: Checkout code

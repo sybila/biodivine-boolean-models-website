@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import FilterBar from '../components/FilterBar';
-import useFilteredModels from '../hooks/useFilteredModels';
+import FilterBar from '../components/FilterBar.tsx';
+import useFilteredModels from '../hooks/useFilteredModels.ts';
 import { ModelsApi } from '../services';
 import {
     filterChangedAtom,
@@ -16,8 +16,8 @@ import {
     showAdvancedAFiltersAtom,
     sortByAtom,
     sortOrderAtom,
-} from '../state/filtersAtom';
-import { FilterOptions } from '../types/data';
+} from '../state/filtersAtom.ts';
+import { FilterOptions } from '../types/data.ts';
 
 const ModelsPage = () => {
     const { data: models, isLoading } = useQuery({

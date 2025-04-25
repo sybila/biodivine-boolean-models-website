@@ -2,9 +2,9 @@ import { CircularProgress } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import ModelViewer from '../components/ModelViewer';
+import ModelViewer from '../components/ModelViewer.tsx';
 import { ModelsApi } from '../services';
-import { parseModifications } from '../utils/stringUtils';
+import { parseModifications } from '../utils/stringUtils.ts';
 
 const ModelsDetailPage = () => {
     const { id } = useParams();

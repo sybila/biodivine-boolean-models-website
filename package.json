@@ -2,14 +2,14 @@
     "name": "biodivine-boolean-models-website",
     "private": true,
     "workspaces": [
-        "frontend",
-        "backend"
+        "apps/*",
+        "libs/*"
     ],
     "scripts": {
-        "dev": "concurrently 'npm run start -w backend' 'npm run dev -w frontend'",
+        "dev": "concurrently 'npm run start -w apps/backend' 'npm run dev -w apps/frontend'",
         "lint": "eslint --config 'eslint.config.mjs'",
         "lint:fix": "eslint --config 'eslint.config.mjs' --fix",
-        "prettier": "prettier --config '.prettierrc' --ignore-path '.prettierignore' 'frontend/**/*.{ts,tsx,js,jsx,css,json}' 'backend/**/*.{ts,js,json}' --write"
+        "prettier": "prettier --config '.prettierrc' --ignore-path '.prettierignore' 'apps/frontend/**/*.{ts,tsx,js,jsx,css,json}' 'apps/backend/**/*.{ts,js,json}' --write"
     },
     "devDependencies": {
         "@eslint/css": "^0.6.0",

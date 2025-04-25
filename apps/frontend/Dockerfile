@@ -1,7 +1,7 @@
 FROM nginx:1.24.0
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY ./dist /www
+COPY dist /www
 COPY startup.sh .
 RUN chmod +x ./startup.sh
 

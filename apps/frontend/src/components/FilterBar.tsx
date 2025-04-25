@@ -4,7 +4,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SouthOutlinedIcon from '@mui/icons-material/SouthOutlined';
 import { Button, IconButton, MenuItem, Select, TextField } from '@mui/material';
 import * as React from 'react';
-import { FilterBarProps } from '../types/data';
+import { FilterBarProps } from '../types/data.ts';
 
 const FilterBar: React.FC<FilterBarProps> = ({
     searchNameQuery,

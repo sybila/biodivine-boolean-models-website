@@ -1,5 +1,5 @@
-import axiosInstance from '../services/base';
-import { Model } from '../types/data';
+import { Model } from '../types/data.ts';
+import axiosInstance from './base.ts';
 
 export const getAll = async (): Promise<Model[]> => {
     const response = await axiosInstance.get(`/models`);
