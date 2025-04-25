@@ -4,7 +4,6 @@ import express from 'express';
 import morgan from 'morgan';
 import { env } from 'process';
 import modelRouter from './routes/modelRoutes';
-import webhookRouter from './routes/webhookRoutes';
 import { ApiResponse } from './types';
 
 const app = express();
@@ -20,7 +19,6 @@ app.use(morgan('combined'));
 
 // My implemented routers
 app.use(modelRouter);
-app.use(webhookRouter);
 
 // No route was taken - 404 - Resource (API endpoint) not found.
 app.use((_req, res) => {
@@ -38,5 +36,3 @@ if (env.NODE_ENV !== 'test') {
         console.log(`[${new Date().toISOString()}] RESTful API for model repository is listening on port ${port}`);
     });
 }
-
-export default app;

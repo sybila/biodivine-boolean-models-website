@@ -31,34 +31,3 @@ export const handleErrors = (e: unknown, res: Response) => {
 export const validateId = z.object({
     id: z.coerce.number().int().positive(),
 });
-
-export const validateModelCreateBody = z.object({
-    name: z.string(),
-    urlPublication: z.string(),
-    urlModel: z.array(z.string()),
-    keywords: z.array(z.string()),
-    variables: z.number(),
-    inputs: z.number(),
-    regulations: z.number(),
-    notes: z.string(),
-    bib: z.string(),
-    modelData: z.instanceof(Buffer),
-});
-
-export const validateModelUpdateBody = z
-    .object({
-        name: z.string().optional(),
-        urlPublication: z.string().url().optional(),
-        urlModel: z.string().url().optional(),
-        keywords: z.array(z.string()).optional(),
-        notes: z.string().optional(),
-    })
-    .refine(
-        (data) => {
-            // Check if at least one of the properties is present and not undefined
-            return Object.values(data).some((value) => value !== undefined);
-        },
-        {
-            message: 'At least one field must be provided',
-        }
-    );
