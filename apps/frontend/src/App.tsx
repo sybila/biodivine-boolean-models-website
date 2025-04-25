@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import ModelViewer from './components/ModelViewer';
-import MainPage from './pages/MainPage';
-import ModelsDetailPage from './pages/ModelsDetailPage';
-import ModelsPage from './pages/ModelsPage';
+import ModelViewer from './components/ModelViewer.tsx';
+import MainPage from './pages/MainPage.tsx';
+import ModelsDetailPage from './pages/ModelsDetailPage.tsx';
+import ModelsPage from './pages/ModelsPage.tsx';
 
 function App() {
     return (

@@ -12,8 +12,8 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
     // TypeScript and its flavors
     {
-        files: ['{frontend,backend}/**/*.{ts,tsx,cts,mts}'],
-        ignores: ['node_modules/**/*', '**/build/**', '**/dist/**', 'frontend/vite.config.ts'],
+        files: ['apps/{frontend,backend}/**/*.{ts,tsx,cts,mts}'],
+        ignores: ['node_modules/**/*', '**/build/**', '**/dist/**', 'apps/frontend/vite.config.ts'],
         extends: [
             eslint.configs.recommended,
             tseslint.configs.recommended,
@@ -24,7 +24,7 @@ export default tseslint.config(
         languageOptions: {
             parser: tseslint.parser,
             parserOptions: {
-                project: ['backend/tsconfig.json', 'frontend/tsconfig.json'],
+                project: ['apps/backend/tsconfig.json', 'apps/frontend/tsconfig.json'],
                 tsconfigRootDir: import.meta.dirname,
             },
         },
@@ -46,7 +46,7 @@ export default tseslint.config(
             'import-x/resolver-next': [
                 createTypeScriptImportResolver({
                     alwaysTryTypes: true,
-                    project: ['backend/tsconfig.json', 'frontend/tsconfig.json'],
+                    project: ['apps/backend/tsconfig.json', 'apps/frontend/tsconfig.json'],
                 }),
                 createNodeResolver({}),
             ],
@@ -54,21 +54,21 @@ export default tseslint.config(
     },
     // JavaScript and its flavors
     {
-        files: ['{frontend,backend}/**/*.{js,jsx,cjs,mjs}'],
+        files: ['apps/{frontend,backend}/**/*.{js,jsx,cjs,mjs}'],
         ignores: [
             'node_modules/**/*',
             '**/build/**',
             '**/dist/**',
-            'frontend/src/components/scripts/cytoscape.min.js',
-            'frontend/src/components/scripts/CytoscapeEditor.js',
-            'frontend/src/components/scripts/LiveModel.js',
+            'apps/frontend/src/components/scripts/cytoscape.min.js',
+            'apps/frontend/src/components/scripts/CytoscapeEditor.js',
+            'apps/frontend/src/components/scripts/LiveModel.js',
         ],
         extends: [eslint.configs.recommended],
     },
     // React in ./frontend/
     {
-        files: ['frontend/**/*.{ts,tsx}'],
-        ignores: ['node_modules/**/*', '**/build/**', '**/dist/**', 'frontend/vite.config.ts'],
+        files: ['apps/frontend/**/*.{ts,tsx}'],
+        ignores: ['node_modules/**/*', '**/build/**', '**/dist/**', 'apps/frontend/vite.config.ts'],
         extends: [
             react.configs.flat.recommended,
             react.configs.flat['jsx-runtime'],
@@ -79,7 +79,7 @@ export default tseslint.config(
         languageOptions: {
             parser: tseslint.parser,
             parserOptions: {
-                project: ['frontend/tsconfig.json'],
+                project: ['apps/frontend/tsconfig.json'],
                 tsconfigRootDir: import.meta.dirname,
                 ecmaFeatures: {
                     jsx: true,
@@ -117,6 +117,7 @@ export default tseslint.config(
     },
     {
         files: ['**/*.css'],
+        ignores: ['node_modules/**/*', '**/build/**', '**/dist/**'],
         language: 'css/css',
         extends: [css.configs.recommended],
         rules: {
@@ -124,8 +125,9 @@ export default tseslint.config(
         },
     },
     {
-        files: ['**/*.html'],
         ...html.configs['flat/recommended'],
+        files: ['**/*.html'],
+        ignores: ['node_modules/**/*', '**/build/**', '**/dist/**'],
         rules: {
             '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
             '@html-eslint/no-extra-spacing-attrs': [

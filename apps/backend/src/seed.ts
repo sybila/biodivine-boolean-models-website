@@ -3,7 +3,7 @@ import path from 'path';
 import client from './repositories/client';
 import { ModelMetadata, ModelMetadataSchema } from './validationModels/modelMetadata';
 
-const MODELS_DIR_PATH = path.join(__dirname, '..', '..', 'models'); // Currently inside backend/src/ - that is why .. ..
+const MODELS_DIR_PATH = path.join(__dirname, '..', '..', '..', 'libs', 'models'); // Currently inside backend/src/ - that is why .. ..
 const METADATA_FILE_NAME = 'metadata.json';
 const AEON_FILE_NAME = 'model.aeon';
 

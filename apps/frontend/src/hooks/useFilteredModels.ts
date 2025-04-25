@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import bibtexParse from 'bibtex-parse';
-import { BibTexItem, FilterOptions, Model } from '../types/data';
+import { BibTexItem, FilterOptions, Model } from '../types/data.ts';
 
 const useFilteredModels = (
     models: Model[],

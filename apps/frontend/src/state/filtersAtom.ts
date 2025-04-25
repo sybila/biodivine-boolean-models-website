@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { Model } from '../types/data';
+import { Model } from '../types/data.ts';
 
 export const searchNameQueryAtom = atom<string>({
     key: 'searchNameQuery',
