@@ -24,7 +24,7 @@ export default tseslint.config(
         languageOptions: {
             parser: tseslint.parser,
             parserOptions: {
-                project: ['apps/backend/tsconfig.json', 'apps/frontend/tsconfig.json'],
+                project: ['./tsconfig.json', 'apps/backend/tsconfig.json', 'apps/frontend/tsconfig.json'],
                 tsconfigRootDir: import.meta.dirname,
             },
         },
@@ -79,7 +79,7 @@ export default tseslint.config(
         languageOptions: {
             parser: tseslint.parser,
             parserOptions: {
-                project: ['apps/frontend/tsconfig.json'],
+                project: ['./tsconfig.json', 'apps/frontend/tsconfig.json'],
                 tsconfigRootDir: import.meta.dirname,
                 ecmaFeatures: {
                     jsx: true,
