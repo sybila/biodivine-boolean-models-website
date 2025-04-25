@@ -2,14 +2,12 @@ import { Result } from '@badrap/result';
 import client from '../client';
 import { ModelID } from '../types/data';
 import { ModelReadFilteredResult, ModelReadSpecificResult } from '../types/return';
-import { modelReadProperties } from './properties';
 
 const readOne = async (data: ModelID): ModelReadSpecificResult => {
     try {
         return await client.$transaction(async (tx) => {
             const model = await tx.model.findUniqueOrThrow({
                 where: { id: data.id },
-                select: modelReadProperties,
             });
             return Result.ok(model);
         });
@@ -21,7 +19,7 @@ const readOne = async (data: ModelID): ModelReadSpecificResult => {
 const readAll = async (): ModelReadFilteredResult => {
     try {
         return await client.$transaction(async (tx) => {
-            const models = await tx.model.findMany({ select: modelReadProperties });
+            const models = await tx.model.findMany();
             return Result.ok(models);
         });
     } catch (e) {
