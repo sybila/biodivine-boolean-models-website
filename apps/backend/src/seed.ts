@@ -1,6 +1,6 @@
+import client from '@database/client';
 import fs from 'fs/promises';
 import path from 'path';
-import client from './repositories/client';
 import { ModelMetadata, ModelMetadataSchema } from './validationModels/modelMetadata';
 
 const MODELS_DIR_PATH = path.join(__dirname, '..', '..', '..', 'libs', 'models'); // Currently inside backend/src/ - that is why .. ..

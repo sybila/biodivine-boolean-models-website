@@ -12,7 +12,7 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
     // TypeScript and its flavors
     {
-        files: ['apps/{frontend,backend}/**/*.{ts,tsx,cts,mts}'],
+        files: ['apps/{frontend,backend}/**/*.{ts,tsx,cts,mts}', 'libs/database/**/*.{ts,cts,mts}'],
         ignores: ['node_modules/**/*', '**/build/**', '**/dist/**', 'apps/frontend/vite.config.ts'],
         extends: [
             eslint.configs.recommended,
@@ -24,7 +24,12 @@ export default tseslint.config(
         languageOptions: {
             parser: tseslint.parser,
             parserOptions: {
-                project: ['./tsconfig.json', 'apps/backend/tsconfig.json', 'apps/frontend/tsconfig.json'],
+                project: [
+                    './tsconfig.json',
+                    'apps/backend/tsconfig.json',
+                    'apps/frontend/tsconfig.json',
+                    'libs/database/tsconfig.json',
+                ],
                 tsconfigRootDir: import.meta.dirname,
             },
         },
@@ -53,7 +58,7 @@ export default tseslint.config(
     },
     // JavaScript and its flavors
     {
-        files: ['apps/{frontend,backend}/**/*.{js,jsx,cjs,mjs}'],
+        files: ['apps/{frontend,backend}/**/*.{js,jsx,cjs,mjs}', 'libs/{database}/**/*.{ts,cts,mts}'],
         ignores: [
             'node_modules/**/*',
             '**/build/**',

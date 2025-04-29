@@ -13,7 +13,7 @@ jobs:
       DATABASE_URL: "postgresql://postgres:postgres@localhost:5555/postgres"
     defaults:
       run:
-        working-directory: backend
+        working-directory: libs/database
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
