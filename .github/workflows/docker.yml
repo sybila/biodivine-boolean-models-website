@@ -32,10 +32,8 @@ jobs:
           -e POSTGRES_PASSWORD=postgres \
           -e POSTGRES_DB=postgres \
           postgres:16
-      - name: Init DB with prisma
+      - name: Init DB with prisma and automatically seed
         run: npx prisma migrate dev --name init
-      - name: Seed DB with data
-        run: npm run seed
       - name: Commit current state of the container
         run: docker commit my-db daemontus/bbm-database:latest
       - name: Push image
