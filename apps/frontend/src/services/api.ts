@@ -1,4 +1,4 @@
-import { BooleanModel } from '../types/data.ts';
+import { BooleanModel } from '@database/generated/client';
 import axiosInstance from './base.ts';
 
 export const getAll = async (): Promise<BooleanModel[]> => {
