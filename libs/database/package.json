@@ -2,10 +2,12 @@
     "name": "database",
     "version": "1.0.0",
     "scripts": {
+        "check": "tsc",
         "generate": "prisma generate --no-engine",
         "migrate": "prisma migrate dev --name init",
         "hard-reset": "prisma migrate reset --force",
-        "studio": "prisma studio"
+        "studio": "prisma studio",
+        "seed": "ts-node -r tsconfig-paths/register src/seed/index.ts"
     },
     "devDependencies": {
         "@types/node": "^22.15.3",

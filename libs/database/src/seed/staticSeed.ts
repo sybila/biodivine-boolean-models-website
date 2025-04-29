@@ -1,9 +1,9 @@
 import client from '@database/client';
 import fs from 'fs/promises';
 import path from 'path';
-import { BooleanModelMetadata, BooleanModelMetadataSchema } from './validationModels/booleanModelMetadata';
+import { BooleanModelMetadata, BooleanModelMetadataSchema } from './validation';
 
-const MODELS_DIR_PATH = path.join(__dirname, '..', '..', '..', 'libs', 'models'); // Currently inside backend/src/ - that is why .. ..
+const MODELS_DIR_PATH = path.join(__dirname, '..', '..', '..', 'models'); // We are inside libs/database/src/seed/
 const METADATA_FILE_NAME = 'metadata.json';
 const AEON_FILE_NAME = 'model.aeon';
 

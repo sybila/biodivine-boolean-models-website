@@ -1,4 +1,4 @@
-import { seed } from './seed';
+import { seed } from './staticSeed';
 
 seed()
     .then(() => console.log('success'))
