@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Setup database
+      - name: Generate database types
         working-directory: libs/database
         run:
           npx prisma generate
@@ -47,6 +47,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Generate database types
+        working-directory: libs/database
+        run:
+          npx prisma generate
 
       - name: Run type check
         run:
@@ -85,6 +90,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Generate database types
+        working-directory: libs/database
+        run:
+          npx prisma generate
 
       - name: Run eslint check
         run:

@@ -13,7 +13,13 @@ export default tseslint.config(
     // TypeScript and its flavors
     {
         files: ['apps/{frontend,backend}/**/*.{ts,tsx,cts,mts}', 'libs/database/**/*.{ts,cts,mts}'],
-        ignores: ['node_modules/**/*', '**/build/**', '**/dist/**', 'apps/frontend/vite.config.ts'],
+        ignores: [
+            'node_modules/**/*',
+            '**/build/**',
+            '**/dist/**',
+            'apps/frontend/vite.config.ts',
+            'libs/database/src/generated/**/*',
+        ],
         extends: [
             eslint.configs.recommended,
             tseslint.configs.recommended,
@@ -58,7 +64,7 @@ export default tseslint.config(
     },
     // JavaScript and its flavors
     {
-        files: ['apps/{frontend,backend}/**/*.{js,jsx,cjs,mjs}', 'libs/{database}/**/*.{ts,cts,mts}'],
+        files: ['apps/{frontend,backend}/**/*.{js,jsx,cjs,mjs}', 'libs/database/**/*.{js,cjs,mjs}'],
         ignores: [
             'node_modules/**/*',
             '**/build/**',
@@ -66,6 +72,7 @@ export default tseslint.config(
             'apps/frontend/src/components/scripts/cytoscape.min.js',
             'apps/frontend/src/components/scripts/CytoscapeEditor.js',
             'apps/frontend/src/components/scripts/LiveModel.js',
+            'libs/database/src/generated/**/*',
         ],
         extends: [eslint.configs.recommended],
     },
