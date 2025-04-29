@@ -22,6 +22,7 @@ jobs:
         run: npm ci
 
       - name: Setup database
+        working-directory: libs/database
         run:
           npx prisma generate
 

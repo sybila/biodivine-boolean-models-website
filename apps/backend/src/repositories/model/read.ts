@@ -1,5 +1,5 @@
 import { Result } from '@badrap/result';
-import client from '../client';
+import client from '@database/client';
 import { ModelID } from '../types/data';
 import { ModelReadFilteredResult, ModelReadSpecificResult } from '../types/return';
 

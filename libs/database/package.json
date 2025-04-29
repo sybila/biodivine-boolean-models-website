@@ -1,0 +1,16 @@
+{
+    "name": "database",
+    "version": "1.0.0",
+    "scripts": {
+        "generate": "prisma generate --no-engine",
+        "migrate": "prisma migrate dev --name init",
+        "hard-reset": "prisma migrate reset --force",
+        "studio": "prisma studio"
+    },
+    "devDependencies": {
+        "@types/node": "^22.15.3",
+        "tsx": "^4.19.4",
+        "typescript": "^5.8.3",
+        "prisma": "^6.6.0"
+    }
+}
