@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { Model } from '../types/data.ts';
+import { BooleanModel } from '../types/data.ts';
 
 export const searchNameQueryAtom = atom<string>({
     key: 'searchNameQuery',
@@ -41,7 +41,7 @@ export const filterChangedAtom = atom<boolean>({
     default: false,
 });
 
-export const filteredModelsAtom = atom<Model[]>({
+export const filteredModelsAtom = atom<BooleanModel[]>({
     key: 'filteredModels',
     default: [],
 });

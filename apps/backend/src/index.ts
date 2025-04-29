@@ -3,7 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
 import { env } from 'process';
-import modelRouter from './routes/modelRoutes';
+import router from './routes';
 import { ApiResponse } from './types';
 
 const app = express();
@@ -18,7 +18,7 @@ app.use(cors());
 app.use(morgan('combined'));
 
 // My implemented routers
-app.use(modelRouter);
+app.use(router);
 
 // No route was taken - 404 - Resource (API endpoint) not found.
 app.use((_req, res) => {

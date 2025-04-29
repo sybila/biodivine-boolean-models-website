@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "Model" (
+CREATE TABLE "BooleanModel" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "urlPublication" TEXT NOT NULL,
@@ -12,5 +12,5 @@ CREATE TABLE "Model" (
     "bib" TEXT NOT NULL,
     "modelData" BYTEA NOT NULL,
 
-    CONSTRAINT "Model_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "BooleanModel_pkey" PRIMARY KEY ("id")
 );

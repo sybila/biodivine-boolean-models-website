@@ -1,5 +1,5 @@
-import { Model } from '@prisma/client';
+import { BooleanModel } from '@prisma/client';
 import DbResult from './common';
 
-export type ModelReadSpecificResult = DbResult<Model>;
-export type ModelReadFilteredResult = DbResult<Model[]>;
+export type BooleanModelReadSpecificResult = DbResult<BooleanModel>;
+export type BooleanModelReadFilteredResult = DbResult<BooleanModel[]>;

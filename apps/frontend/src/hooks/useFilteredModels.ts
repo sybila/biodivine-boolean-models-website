@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import bibtexParse from 'bibtex-parse';
-import { BibTexItem, FilterOptions, Model } from '../types/data.ts';
+import { BibTexItem, BooleanModel, FilterOptions } from '../types/data.ts';
 
 const useFilteredModels = (
-    models: Model[],
+    models: BooleanModel[],
     { searchNameQuery, searchBibJournalQuery, searchBibYearQuery, sortBy, sortOrder, selectedKeywords }: FilterOptions
 ) => {
-    const [filteredModels, setFilteredModels] = useState<Model[]>([]);
+    const [filteredModels, setFilteredModels] = useState<BooleanModel[]>([]);
 
     useEffect(() => {
         if (!models) return;
