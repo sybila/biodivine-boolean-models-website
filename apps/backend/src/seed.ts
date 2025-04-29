@@ -1,7 +1,7 @@
 import client from '@database/client';
 import fs from 'fs/promises';
 import path from 'path';
-import { ModelMetadata, ModelMetadataSchema } from './validationModels/modelMetadata';
+import { BooleanModelMetadata, BooleanModelMetadataSchema } from './validationModels/booleanModelMetadata';
 
 const MODELS_DIR_PATH = path.join(__dirname, '..', '..', '..', 'libs', 'models'); // Currently inside backend/src/ - that is why .. ..
 const METADATA_FILE_NAME = 'metadata.json';
@@ -26,10 +26,10 @@ export const seed = () => {
             }
 
             const metadataContents = await fs.readFile(metadataFilePath, 'utf-8');
-            const metadata: ModelMetadata = ModelMetadataSchema.parse(JSON.parse(metadataContents));
+            const metadata: BooleanModelMetadata = BooleanModelMetadataSchema.parse(JSON.parse(metadataContents));
             const aeonData = await fs.readFile(aeonFilePath);
 
-            await tx.model.create({
+            await tx.booleanModel.create({
                 data: {
                     id: metadata.id,
                     name: metadata.name,

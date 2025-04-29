@@ -1,4 +1,4 @@
-export interface Model {
+export interface BooleanModel {
     id: number;
     name: string;
     urlPublication: string;

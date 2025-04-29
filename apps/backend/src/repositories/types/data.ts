@@ -1,3 +1,3 @@
-export interface ModelID {
+export interface BooleanModelID {
     id: number;
 }

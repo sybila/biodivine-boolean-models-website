@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const ModelMetadataSchema = z.object({
+export const BooleanModelMetadataSchema = z.object({
     id: z.number().int().positive(),
     name: z.string(),
     'url-publication': z.string().url(),
@@ -14,4 +14,4 @@ export const ModelMetadataSchema = z.object({
 });
 
 // TypeScript type inferred from the schema
-export type ModelMetadata = z.infer<typeof ModelMetadataSchema>;
+export type BooleanModelMetadata = z.infer<typeof BooleanModelMetadataSchema>;

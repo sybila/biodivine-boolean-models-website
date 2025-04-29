@@ -15,7 +15,7 @@ export const handleErrors = (e: unknown, res: Response) => {
         const nonExistentRecordErrorResponse = {
             status: 'Failure',
             data: {},
-            error: 'Non existent or deleted model',
+            error: 'Non existent or deleted booleanModel',
         };
         return res.status(404).send(nonExistentRecordErrorResponse);
     }

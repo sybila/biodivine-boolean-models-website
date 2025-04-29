@@ -1,12 +1,12 @@
 import { Result } from '@badrap/result';
 import client from '@database/client';
-import { ModelID } from '../types/data';
-import { ModelReadFilteredResult, ModelReadSpecificResult } from '../types/return';
+import { BooleanModelID } from '../types/data';
+import { BooleanModelReadFilteredResult, BooleanModelReadSpecificResult } from '../types/return';
 
-const readOne = async (data: ModelID): ModelReadSpecificResult => {
+const readOne = async (data: BooleanModelID): BooleanModelReadSpecificResult => {
     try {
         return await client.$transaction(async (tx) => {
-            const model = await tx.model.findUniqueOrThrow({
+            const model = await tx.booleanModel.findUniqueOrThrow({
                 where: { id: data.id },
             });
             return Result.ok(model);
@@ -16,10 +16,10 @@ const readOne = async (data: ModelID): ModelReadSpecificResult => {
     }
 };
 
-const readAll = async (): ModelReadFilteredResult => {
+const readAll = async (): BooleanModelReadFilteredResult => {
     try {
         return await client.$transaction(async (tx) => {
-            const models = await tx.model.findMany();
+            const models = await tx.booleanModel.findMany();
             return Result.ok(models);
         });
     } catch (e) {

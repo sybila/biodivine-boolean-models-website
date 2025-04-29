@@ -1,1 +1,1 @@
-export * as ModelsApi from './modelsApi';
+export * as ModelsApi from './api';

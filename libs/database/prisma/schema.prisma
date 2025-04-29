@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Model {
+model BooleanModel {
   id             Int      @id @default(autoincrement())
   name           String
   urlPublication String
