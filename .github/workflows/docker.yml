@@ -58,9 +58,6 @@ jobs:
   frontend:
     name: Build frontend image
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -69,15 +66,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Add Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'
-      - name: Install dependencies
-        run: npm install
-      - name: Build frontend
-        run: npm run build
       - name: Build image
-        run: docker build --tag daemontus/bbm-frontend --file ./Dockerfile
+        run: docker build --tag daemontus/bbm-frontend --file ./apps/frontend/Dockerfile .
       - name: Push image
         run: docker push daemontus/bbm-frontend
