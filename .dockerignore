@@ -1,2 +1,10 @@
 **/node_modules
 **/generated
+**/dist/
+
+.git
+.vscode
+.idea
+**/*.log
+
+**/.env
