@@ -42,9 +42,6 @@ jobs:
   backend:
     name: Build backend image
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -54,7 +51,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build image
-        run: docker build --tag daemontus/bbm-backend --file ./Dockerfile
+        run: docker build --tag daemontus/bbm-backend --file ./apps/backend/Dockerfile .
       - name: Push image
         run: docker push daemontus/bbm-backend
 

@@ -1,15 +1,23 @@
-# Container is based on Alpine linux with node.js preinstalled.
-FROM node:alpine 
-WORKDIR /usr/mynodeapp
+FROM node:alpine
+WORKDIR /usr/bbm-website
 
-# Copy backend files.
-COPY ./ ./
+# Copy importable lib projects, the target backend, monorepo package.json and package-lock and root tscondig.json
+COPY ./libs ./libs
+COPY ./apps/backend ./apps/backend
+COPY ./package*.json .
+COPY ./tsconfig.json .
 
-# Install project dependencies.
-RUN npm install
+# Generate database types
+WORKDIR /usr/bbm-website/libs/database
+RUN npm ci
+RUN npm run generate
 
-# The port on which the backend is running.
+# Install backend dependencies with npm clean install
+WORKDIR /usr/bbm-website/apps/backend
+RUN npm ci
+
+# The port on which the backend is running
 EXPOSE 3000
 
-# Run server.
+# Run server
 CMD ["npm", "start"]
