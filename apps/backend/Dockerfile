@@ -1,4 +1,4 @@
-FROM node:alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /usr/bbm-website
 
 # Copy importable lib projects, the target backend, monorepo package.json and package-lock and root tsconfig.json
@@ -16,7 +16,7 @@ RUN npm run generate -w database
 RUN npm run build -w backend
 
 ################################
-FROM node:18-alpine AS runner
+FROM node:22-alpine AS runner
 WORKDIR /usr/bbm-website
 
 # Copy root manifests for workspace map and exact versions, tsconfig for paths resolution
