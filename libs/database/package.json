@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "check": "tsc",
+        "build": "tsc -p tsconfig.build.json",
         "generate": "prisma generate --no-engine",
         "migrate": "prisma migrate dev --name init",
         "hard-reset": "prisma migrate reset --force",
