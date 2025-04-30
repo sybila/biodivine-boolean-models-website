@@ -19,7 +19,7 @@ RUN npm run generate -w database
 RUN npm run build -w frontend
 
 ##############################
-FROM nginx:1.24.0 AS runner
+FROM nginx:1-alpine AS runner
 
 COPY --from=builder /usr/bbm-website/apps/frontend/dist /www
 
