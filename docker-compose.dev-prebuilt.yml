@@ -1,0 +1,18 @@
+# This configuration is intended for development, not for production.
+
+services:
+
+  # Uses a pre-built image already provided by us. It does not need any data volumes,
+  # because the database is already baked into the image.
+  postgres:
+    image: sybila/bbm-database:latest
+    restart: always
+    container_name: bbm-database
+    ports:
+      - "5555:5432"
+    environment:
+      # Note that the database should never be exposed to the internet
+      # or even local network. As such, it is safe to just use static credentials.
+      - POSTGRES_USER=bbm
+      - POSTGRES_PASSWORD=bbm
+      - POSTGRES_DB=bbm
