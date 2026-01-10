@@ -1,23 +1,26 @@
 {
-    "name": "database",
+    "name": "@biodivine-boolean-models-website/database",
     "version": "1.0.0",
+    "type": "module",
     "scripts": {
-        "check": "tsc",
-        "build": "tsc -p tsconfig.build.json",
-        "generate": "prisma generate --no-engine",
-        "migrate": "prisma migrate dev --name init",
-        "hard-reset": "prisma migrate reset --force",
-        "hard-reset-no-seed": "prisma migrate reset --force --skip-seed",
+        "check": "tsc --noEmit",
+        "build": "tsc",
+        "schema-generate": "prisma generate",
+        "schema-migrate": "prisma migrate dev --name init",
+        "database-reset": "prisma migrate reset",
+        "database-seed": "prisma db seed",
+        "database-recreate": "prisma migrate reset -f; prisma db seed",
         "studio": "prisma studio",
-        "seed": "ts-node -r tsconfig-paths/register src/seed/index.ts"
-    },
-    "prisma": {
-        "seed": "npm run seed"
+        "clean": "rm -r dist; rm tsconfig.tsbuildinfo"
     },
     "devDependencies": {
-        "@types/node": "^22.15.3",
-        "tsx": "^4.19.4",
-        "typescript": "^5.8.3",
-        "prisma": "^6.6.0"
+        "@types/node": "^25.0.6",
+        "prisma": "^7.2.0",
+        "tsx": "^4.21.0",
+        "typescript": "^5.9.3"
+    },
+    "dependencies": {
+        "@prisma/adapter-pg": "^7.2.0",
+        "@prisma/client": "^7.2.0"
     }
 }

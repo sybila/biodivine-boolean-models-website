@@ -11,6 +11,9 @@ CREATE TABLE "BooleanModel" (
     "notes" TEXT NOT NULL,
     "bib" TEXT NOT NULL,
     "modelData" BYTEA NOT NULL,
+    "variableNames" TEXT[],
+    "inputNames" TEXT[],
+    "outputNames" TEXT[],
 
     CONSTRAINT "BooleanModel_pkey" PRIMARY KEY ("id")
 );

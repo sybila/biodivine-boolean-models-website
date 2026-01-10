@@ -11,5 +11,9 @@
         }
     },
     "exclude": ["node_modules"],
-    "references": [{ "path": "apps/frontend" }, { "path": "apps/backend" }, { "path": "libs/database" }]
+    "references": [
+        { "path": "apps/frontend" },
+        { "path": "apps/backend" },
+        { "path": "libs/database" }
+    ]
 }
