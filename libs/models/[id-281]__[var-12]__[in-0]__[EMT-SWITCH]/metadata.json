@@ -1,0 +1,32 @@
+{
+    "id": 281,
+    "name": "EMT-SWITCH",
+    "url-publication": "https://doi.org/10.1016/j.isci.2023.106321",
+    "url-model": "https://ars.els-cdn.com/content/image/1-s2.0-S258900422300398X-mmc5.zip",
+    "keywords": [
+        "biomodels",
+        "curated"
+    ],
+    "variables": 12,
+    "variable-names": [
+        "v_LEF1",
+        "v_N_bcatenin_H",
+        "v_SNAI1",
+        "v_SNAI2",
+        "v_Twist",
+        "v_ZEB1",
+        "v_ZEB1_H",
+        "v_b_catenin_TCF4",
+        "v_miR_200",
+        "v_miR_34"
+    ],
+    "inputs": 0,
+    "input-names": [],
+    "output-names": [
+        "v_Ecadherin_mRNA",
+        "v_TGFb_secr"
+    ],
+    "regulations": 40,
+    "notes": "### Modifications\n\nThe model is provided without modifications.",
+    "bib": "@article{bbm-281,\n  title={Boolean modeling of mechanosensitive epithelial to mesenchymal transition and its reversal},\n  author={Sullivan, Emmalee and Harris, Marlayna and Bhatnagar, Arnav and Guberman, Eric and Zonfa, Ian and Regan, Erzs{\\'e}bet Ravasz},\n  journal={iscience},\n  volume={26},\n  number={4},\n  year={2023},\n  publisher={Elsevier}\n}\n"
+}
