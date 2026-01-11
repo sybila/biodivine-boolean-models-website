@@ -1,13 +1,17 @@
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import 'dotenv/config';
 import express from 'express';
 import morgan from 'morgan';
 import { env } from 'process';
-import router from './routes';
-import { ApiResponse } from './types';
+import router from './routes.js';
+import { ApiResponse } from './types.js';
+
+// Read configuration from `.env` file
+const port = process.env.PORT ?? env.PORT ?? 3000;
+console.log('Configured port:', port);
 
 const app = express();
-const port = env.PORT ?? 3000;
 
 app.use(bodyParser.json());
 
@@ -24,7 +28,6 @@ app.use(router);
 app.use((_req, res) => {
     const response: ApiResponse<object> = {
         status: 'failure',
-        data: {},
         error: 'No matching endpoint was found.',
     };
 
