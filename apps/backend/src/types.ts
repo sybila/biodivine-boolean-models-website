@@ -1,3 +1,4 @@
+// TODO: This is not used properly.
 export type ApiResponse<T> =
     | {
           status: 'success';
@@ -6,6 +7,5 @@ export type ApiResponse<T> =
       }
     | {
           status: 'failure';
-          data: T;
           error: string;
       };

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { readAllController, readSpecificController } from '../controllers/booleanModel/read';
+import { readAllController, readSpecificController } from './controllers/booleanModel.js';
 
 const router = Router();
 

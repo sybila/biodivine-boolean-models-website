@@ -1,28 +1,25 @@
 import type { Response } from 'express';
 import { z, ZodError } from 'zod';
-import { NonexistentRecordError } from '../repositories/types/errors';
+import { ModelNotFoundError } from '../repositories/types.js';
+import { ApiResponse } from '../types.js';
 
 export const handleErrors = (e: unknown, res: Response) => {
     if (e instanceof ZodError) {
-        const zodErrorResponse = {
-            status: 'Failure',
-            data: {},
-            error: 'Invalid request input',
+        const zodErrorResponse: ApiResponse<object> = {
+            status: 'failure',
+            error: e.issues[0].message,
         };
         return res.status(400).send(zodErrorResponse);
     }
-    if (e instanceof NonexistentRecordError) {
-        const nonExistentRecordErrorResponse = {
-            status: 'Failure',
-            data: {},
-            error: 'Non existent or deleted booleanModel',
+    if (e instanceof ModelNotFoundError) {
+        const nonExistentRecordErrorResponse: ApiResponse<object> = {
+            status: 'failure',
+            error: e.message,
         };
         return res.status(404).send(nonExistentRecordErrorResponse);
     }
-    const serverFailResponse = {
-        status: 'Failure',
-        data: {},
-        //error: 'Server side error',
+    const serverFailResponse: ApiResponse<object> = {
+        status: 'failure',
         error: e instanceof Error ? e.message : String(e),
     };
     return res.status(500).send(serverFailResponse);
