@@ -1,4 +1,3 @@
-// TODO: This is not used properly.
 export type ApiResponse<T> =
     | {
           status: 'success';
@@ -9,3 +8,10 @@ export type ApiResponse<T> =
           status: 'failure';
           error: string;
       };
+
+export function errResponse(message: string): ApiResponse<any> {
+    return {
+        status: 'failure',
+        error: message,
+    };
+}

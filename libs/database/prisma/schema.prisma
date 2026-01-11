@@ -21,8 +21,15 @@ model BooleanModel {
   regulations    Int
   notes          String
   bib            String
-  modelData      Bytes
   variableNames  String[]
   inputNames     String[]
   outputNames    String[]
+}
+
+model BooleanModelData {
+  modelId        Int
+  mimeType      String
+  modelData Bytes
+
+  @@id([modelId,mimeType])
 }
