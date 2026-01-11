@@ -10,8 +10,8 @@ import { z } from 'zod';
 const BooleanModelMetadataSchema = z.object({
     id: z.number().int().positive(),
     name: z.string(),
-    'url-publication': z.string().url(),
-    'url-model': z.union([z.string().url(), z.array(z.string().url()).nonempty()]),
+    'url-publication': z.url(),
+    'url-model': z.union([z.url(), z.array(z.url()).nonempty()]),
     keywords: z.array(z.string()),
     variables: z.number().int().nonnegative(),
     inputs: z.number().int().nonnegative(),
@@ -30,6 +30,10 @@ const MODELS_DIR_PATH = path.join(__dirname, '..', '..', '..', '..', 'models');
 console.log('Models directory path:', MODELS_DIR_PATH);
 const METADATA_FILE_NAME = 'metadata.json';
 const AEON_FILE_NAME = 'model.aeon';
+const SBML_FILE_NAME = 'model.sbml';
+const BNET_FILE_NAME = 'model.bnet';
+const BOOLEANNET_FILE_NAME = 'model.booleannet.txt';
+const BMA_FILE_NAME = 'model.bma.json';
 
 const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL!,
@@ -41,19 +45,22 @@ const prisma = new PrismaClient({ adapter });
     the `metadata.json` and `model.aeon` files.
  */
 async function main() {
-    return prisma.$transaction(async (tx) => {
-        const subFolders = await fs.readdir(MODELS_DIR_PATH, { withFileTypes: true });
-        for (const subFolder of subFolders) {
-            if (!subFolder.isDirectory()) {
-                continue;
-            }
+    const subFolders = await fs.readdir(MODELS_DIR_PATH, { withFileTypes: true });
+    for (const subFolder of subFolders) {
+        if (!subFolder.isDirectory()) {
+            continue;
+        }
 
+        await prisma.$transaction(async (tx) => {
             const metadataFilePath = path.join(MODELS_DIR_PATH, subFolder.name, METADATA_FILE_NAME);
             const aeonFilePath = path.join(MODELS_DIR_PATH, subFolder.name, AEON_FILE_NAME);
+            const sbmlFilePath = path.join(MODELS_DIR_PATH, subFolder.name, SBML_FILE_NAME);
+            const bnetFilePath = path.join(MODELS_DIR_PATH, subFolder.name, BNET_FILE_NAME);
+            const booleannetFilePath = path.join(MODELS_DIR_PATH, subFolder.name, BOOLEANNET_FILE_NAME);
+            const bmaFilePath = path.join(MODELS_DIR_PATH, subFolder.name, BMA_FILE_NAME);
 
             const metadataContents = await fs.readFile(metadataFilePath, 'utf-8');
             const metadata: BooleanModelMetadata = BooleanModelMetadataSchema.parse(JSON.parse(metadataContents));
-            const aeonData = await fs.readFile(aeonFilePath);
 
             await tx.booleanModel.create({
                 data: {
@@ -69,18 +76,57 @@ async function main() {
                     regulations: metadata.regulations,
                     notes: metadata.notes,
                     bib: metadata.bib,
-                    modelData: aeonData,
                     variableNames: metadata['variable-names'],
                     inputNames: metadata['input-names'],
                     outputNames: metadata['output-names'],
                 },
             });
 
-            console.log(`Imported data from ${subFolder.name}`);
-        }
+            await tx.booleanModelData.create({
+                data: {
+                    mimeType: 'text/aeon',
+                    modelId: metadata.id,
+                    modelData: await fs.readFile(aeonFilePath),
+                },
+            });
 
-        console.log('All the files were successfully imported!');
-    });
+            await tx.booleanModelData.create({
+                data: {
+                    mimeType: 'text/sbml',
+                    modelId: metadata.id,
+                    modelData: await fs.readFile(sbmlFilePath),
+                },
+            });
+
+            await tx.booleanModelData.create({
+                data: {
+                    mimeType: 'text/bnet',
+                    modelId: metadata.id,
+                    modelData: await fs.readFile(bnetFilePath),
+                },
+            });
+
+            await tx.booleanModelData.create({
+                data: {
+                    mimeType: 'text/booleannet',
+                    modelId: metadata.id,
+                    modelData: await fs.readFile(booleannetFilePath),
+                },
+            });
+
+            await tx.booleanModelData.create({
+                data: {
+                    mimeType: 'text/bma',
+                    modelId: metadata.id,
+                    modelData: await fs.readFile(bmaFilePath),
+                },
+            });
+
+            console.log(`Imported data from ${subFolder.name}`);
+        }, { timeout: 10 * 60 * 1000 }); // For some large models, we need a longer timeout.
+    }
+
+    console.log('All the files were successfully imported!');
 }
 
 main()

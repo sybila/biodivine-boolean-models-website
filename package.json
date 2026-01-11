@@ -12,6 +12,8 @@
         "database-seed": "npm run database-seed -w libs/database",
         "database-recreate": "npm run database-recreate -w libs/database",
 
+        "backend-start": "npm run start -w apps/backend",
+
         "dev": "concurrently 'npm run start -w apps/backend' 'npm run dev -w apps/frontend'",
         "lint": "eslint --config 'eslint.config.mjs'",
         "lint:fix": "eslint --config 'eslint.config.mjs' --fix",
