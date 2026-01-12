@@ -1,18 +1,17 @@
 import { CircularProgress } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import { marked } from 'marked';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import * as BbmApiService from '../BbmApiService.ts';
 import ModelViewer from '../components/ModelViewer.tsx';
-import { ModelsApi } from '../services';
-import { parseModifications } from '../utils/stringUtils.ts';
 
 const ModelsDetailPage = () => {
     const { id } = useParams();
-    const [fileData, setFileData] = useState<string>('');
     const [modifications, setModifications] = useState<string>('');
     const { data: model, isLoading } = useQuery({
         queryKey: ['model', id],
-        queryFn: () => ModelsApi.getSpecific(id!),
+        queryFn: () => BbmApiService.getById(id!),
         gcTime: 0,
     });
 
@@ -22,20 +21,9 @@ const ModelsDetailPage = () => {
     };
 
     useEffect(() => {
-        const data = model?.modelData;
-        if (data) {
-            try {
-                const tmp = new Uint8Array((data as unknown as { type: string; data: number[] }).data);
-                const dataString = new TextDecoder('utf-8').decode(tmp);
-                setFileData(dataString);
-            } catch (e) {
-                console.error('error converting', e);
-            }
-        }
-
         const notes = model?.notes;
         if (notes) {
-            setModifications(parseModifications(notes));
+            setModifications(marked.parse(notes, { async: false }));
         }
     }, [model]);
 
@@ -84,7 +72,7 @@ const ModelsDetailPage = () => {
                                         <>
                                             <b>Sources</b>:{' '}
                                             <ul>
-                                                {model?.urlModel.map((source) => (
+                                                {model?.urlModel.map((source: string) => (
                                                     <li key={source}>
                                                         <a className="page__link" href={source}>
                                                             {source}
@@ -109,7 +97,7 @@ const ModelsDetailPage = () => {
                         </div>
                         <h3 className="page__content-subtitle">Model Viewer</h3>
                         <div className="details-page__model-viewer">
-                            <ModelViewer modelData={fileData} />
+                            <ModelViewer modelId={model?.id} />
                         </div>
                         <div className="details-page__mobile-model-viewer">
                             <button className="page__button details-page__newTab-button" onClick={openInNewTab}>

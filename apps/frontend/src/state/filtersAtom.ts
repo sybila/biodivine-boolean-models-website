@@ -1,52 +1,22 @@
-import { atom } from 'recoil';
-import { BooleanModel } from '../types/data.ts';
+import { atom } from 'jotai';
+import { BooleanModel } from '../types.ts';
 
-export const searchNameQueryAtom = atom<string>({
-    key: 'searchNameQuery',
-    default: '',
-});
+export const searchNameQueryAtom = atom<string>('');
 
-export const searchBibJournalQueryAtom = atom<string>({
-    key: 'searchBibJournalQuery',
-    default: '',
-});
+export const searchBibJournalQueryAtom = atom<string>('');
 
-export const searchBibYearQueryAtom = atom<string>({
-    key: 'searchBibYearQuery',
-    default: '',
-});
+export const searchBibYearQueryAtom = atom<string>('');
 
-export const sortByAtom = atom<string>({
-    key: 'sortBy',
-    default: 'name',
-});
+export const sortByAtom = atom<string>('');
 
-export const sortOrderAtom = atom<string>({
-    key: 'sortOrder',
-    default: 'asc',
-});
+export const sortOrderAtom = atom<string>('');
 
-export const selectedKeywordsAtom = atom<string[]>({
-    key: 'selectedKeywords',
-    default: [],
-});
+export const selectedKeywordsAtom = atom<string[]>([]);
 
-export const showAdvancedAFiltersAtom = atom<boolean>({
-    key: 'showAdvancedFilters',
-    default: false,
-});
+export const showAdvancedAFiltersAtom = atom<boolean>(false);
 
-export const filterChangedAtom = atom<boolean>({
-    key: 'filterChanged',
-    default: false,
-});
+export const filterChangedAtom = atom<boolean>(false);
 
-export const filteredModelsAtom = atom<BooleanModel[]>({
-    key: 'filteredModels',
-    default: [],
-});
+export const filteredModelsAtom = atom<BooleanModel[]>([]);
 
-export const pageNumberAtom = atom<number>({
-    key: 'pageNumber',
-    default: 1,
-});
+export const pageNumberAtom = atom<number>(1);
