@@ -1,43 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { ModelsApi } from '../services';
-// @ts-expect-error - js/ts type problem
+import { useEffect, useRef } from 'react';
+import * as ModelsApi from '../BbmApiService.ts';
 import { show_model } from './scripts/model-view.js';
 
 interface ModelViewerProps {
-    modelData?: string;
+    modelId?: number;
 }
-const ModelViewer = ({ modelData }: ModelViewerProps) => {
-    const { id } = useParams();
-    const { data: model } = useQuery({
-        queryKey: ['model'],
-        queryFn: () => ModelsApi.getSpecific(id!),
+
+/**
+ * Model viewer is a wrapper around the "old school" AEON graph component which is currently in the `scripts`
+ * directory. You give it a model ID, and it will then fetch the model data and display it in a cytoscape viewer.
+ */
+const ModelViewer = ({ modelId }: ModelViewerProps) => {
+    const modelView = useRef<HTMLDivElement | null>(null);
+
+    const { data: modelData } = useQuery({
+        queryKey: ['modelData'],
+        queryFn: () => ModelsApi.getAeonData((modelId ?? 0).toString()),
         gcTime: 0,
     });
 
     useEffect(() => {
-        const container = document.getElementById('model-view');
-        if (!modelData) {
-            let dataString = '';
-            const data = model?.modelData;
-            if (data) {
-                try {
-                    const tmp = new Uint8Array((data as unknown as { type: string; data: number[] }).data);
-                    dataString = new TextDecoder('utf-8').decode(tmp);
-                } catch (e) {
-                    console.error('error converting', e);
-                }
-            }
-            show_model(container, dataString);
-        } else {
-            show_model(container, modelData);
-        }
-    });
+        if (modelData === undefined) return;
+        if (modelView.current === null) return;
+        show_model(modelView.current, modelData);
+    }, [modelData]);
 
     return (
         <div className="model-viewer__container">
-            <div className="model-viewer__view" id="model-view"></div>
+            <div className="model-viewer__view" ref={modelView}></div>
         </div>
     );
 };

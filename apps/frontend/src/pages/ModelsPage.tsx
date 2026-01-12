@@ -1,11 +1,11 @@
 import { CircularProgress, Pagination } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
 import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import * as BbmApiService from '../BbmApiService.ts';
 import FilterBar from '../components/FilterBar.tsx';
 import useFilteredModels from '../hooks/useFilteredModels.ts';
-import { ModelsApi } from '../services';
 import {
     filterChangedAtom,
     pageNumberAtom,
@@ -17,23 +17,23 @@ import {
     sortByAtom,
     sortOrderAtom,
 } from '../state/filtersAtom.ts';
-import { FilterOptions } from '../types/data.ts';
+import { FilterOptions } from '../types.ts';
 
 const ModelsPage = () => {
     const { data: models, isLoading } = useQuery({
         queryKey: ['models'],
-        queryFn: () => ModelsApi.getAll(),
+        queryFn: () => BbmApiService.getAll(),
     });
 
-    const [searchNameQuery, setSearchNameQuery] = useRecoilState<string>(searchNameQueryAtom);
-    const [searchBibJournalQuery, setSearchBibJournalQuery] = useRecoilState<string>(searchBibJournalQueryAtom);
-    const [searchBibYearQuery, setSearchBibYearQuery] = useRecoilState<string>(searchBibYearQueryAtom);
-    const [sortBy, setSortBy] = useRecoilState<string>(sortByAtom);
-    const [sortOrder, setSortOrder] = useRecoilState<string>(sortOrderAtom);
-    const [selectedKeywords, setSelectedKeywords] = useRecoilState<string[]>(selectedKeywordsAtom);
-    const [showAdvancedFilters, setShowAdvancedFilters] = useRecoilState<boolean>(showAdvancedAFiltersAtom);
-    const [filterChanged, setFilterChanged] = useRecoilState<boolean>(filterChangedAtom);
-    const [pageNumber, setPageNumber] = useRecoilState(pageNumberAtom);
+    const [searchNameQuery, setSearchNameQuery] = useAtom<string>(searchNameQueryAtom);
+    const [searchBibJournalQuery, setSearchBibJournalQuery] = useAtom<string>(searchBibJournalQueryAtom);
+    const [searchBibYearQuery, setSearchBibYearQuery] = useAtom<string>(searchBibYearQueryAtom);
+    const [sortBy, setSortBy] = useAtom<string>(sortByAtom);
+    const [sortOrder, setSortOrder] = useAtom<string>(sortOrderAtom);
+    const [selectedKeywords, setSelectedKeywords] = useAtom<string[]>(selectedKeywordsAtom);
+    const [showAdvancedFilters, setShowAdvancedFilters] = useAtom<boolean>(showAdvancedAFiltersAtom);
+    const [filterChanged, setFilterChanged] = useAtom<boolean>(filterChangedAtom);
+    const [pageNumber, setPageNumber] = useAtom(pageNumberAtom);
 
     const filterOptions: FilterOptions = {
         searchNameQuery,
@@ -43,6 +43,8 @@ const ModelsPage = () => {
         sortOrder,
         selectedKeywords,
     };
+
+    console.log(filterOptions);
 
     const filteredModels = useFilteredModels(models!, filterOptions);
     const numberOfModels = filteredModels.length;

@@ -1,8 +1,7 @@
+import { BooleanModel } from '@biodivine-boolean-models-website/database/src/generated/prisma/client.ts';
+import bibtexParse, { BibTeXEntry, BibTeXField } from 'bibtex-parse';
 import { useEffect, useState } from 'react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import bibtexParse from 'bibtex-parse';
-import { BibTexItem, BooleanModel, FilterOptions } from '../types/data.ts';
+import { FilterOptions } from '../types.ts';
 
 const useFilteredModels = (
     models: BooleanModel[],
@@ -13,9 +12,9 @@ const useFilteredModels = (
     useEffect(() => {
         if (!models) return;
 
-        const findValueByName = (array: BibTexItem[], name: string) => {
+        const findValueByName = (array: BibTeXField[], name: string) => {
             const field = array.find((item) => item.name === name);
-            return field ? field.value : undefined;
+            return field ? JSON.stringify(field.value) : undefined;
         };
 
         const filtered = models.filter((model) => {
@@ -28,10 +27,11 @@ const useFilteredModels = (
 
             // Parse the BibTex data
             const parsedBib = bibtexParse.parse(model.bib);
+            const bibItem = parsedBib[0] as BibTeXEntry;
 
-            const journal = findValueByName(parsedBib[0].fields, 'journal');
-            const school = findValueByName(parsedBib[0].fields, 'school');
-            const bookTitle = findValueByName(parsedBib[0].fields, 'booktitle');
+            const journal = findValueByName(bibItem.fields, 'journal');
+            const school = findValueByName(bibItem.fields, 'school');
+            const bookTitle = findValueByName(bibItem.fields, 'booktitle');
 
             // Journal match check
             if (journal) {
@@ -43,7 +43,7 @@ const useFilteredModels = (
             }
 
             // Year match check
-            const year = findValueByName(parsedBib[0].fields, 'year');
+            const year = findValueByName(bibItem.fields, 'year');
             if (year) {
                 yearMatch = year.toLowerCase().includes(searchBibYearQuery.toLowerCase());
             }

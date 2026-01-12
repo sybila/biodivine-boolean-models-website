@@ -1,23 +1,5 @@
-export interface BooleanModel {
-    id: number;
-    name: string;
-    urlPublication: string;
-    urlModel: string[];
-    keywords: string[];
-    variables: number;
-    inputs: number;
-    regulations: number;
-    notes: string;
-    bib: string;
-    modelData: Buffer;
-}
-
-export interface BibTexItem {
-    name: string;
-    value: string;
-    datatype: string;
-    raw: string;
-}
+export { type BooleanModel } from '@biodivine-boolean-models-website/database/src/generated/prisma/client.ts';
+export type FileFormat = 'aeon' | 'sbml' | 'bnet' | 'booleannet' | 'bma';
 
 export interface FilterOptions {
     searchNameQuery: string;
