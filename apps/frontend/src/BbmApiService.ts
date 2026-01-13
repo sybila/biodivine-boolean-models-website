@@ -5,8 +5,12 @@ import { BooleanModel, FileFormat } from './types.ts';
  * During testing, the backend URL is determined by the `VITE_BACKEND_PORT` variable. For production, the URL
  * will be replaced by a script at startup time; hence we only use a `${BACKEND_URL}` placeholder.
  */
+export const baseURL = import.meta.env.PROD
+    ? '${BACKEND_URL}'
+    : 'http://localhost:' + import.meta.env.VITE_BACKEND_PORT;
+
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.PROD ? '${BACKEND_URL}' : 'http://localhost:' + import.meta.env.VITE_BACKEND_PORT,
+    baseURL: baseURL,
 });
 
 /**
