@@ -9,7 +9,7 @@ export type ApiResponse<T> =
           error: string;
       };
 
-export function errResponse(message: string): ApiResponse<any> {
+export function errResponse(message: string): ApiResponse<unknown> {
     return {
         status: 'failure',
         error: message,

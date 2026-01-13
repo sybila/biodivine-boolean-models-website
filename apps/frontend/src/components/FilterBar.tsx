@@ -1,210 +1,134 @@
 import ClearIcon from '@mui/icons-material/Clear';
-import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import SouthOutlinedIcon from '@mui/icons-material/SouthOutlined';
-import { Button, IconButton, MenuItem, Select, TextField } from '@mui/material';
-import * as React from 'react';
-import { FilterBarProps } from '../types.ts';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Box, Button, Card, CardContent, Chip, Stack } from '@mui/material';
+import { useAtom, useAtomValue } from 'jotai';
+import { filteredKeywordCountsAtom, selectedKeywordsAtom, showAdvancedFiltersAtom } from '../state/searchAtoms.ts';
+import { AEON_BUTTON } from '../styles.ts';
+import FilterBarJournalQuery from './FilterBarJournalQuery.tsx';
+import FilterBarSearchQuery from './FilterBarSearchQuery.tsx';
+import FilterBarYearQuery from './FilterBarYearQuery.tsx';
+import FilterBarSortBySelect from './FilterBySortBySelect.tsx';
 
-const FilterBar: React.FC<FilterBarProps> = ({
-    searchNameQuery,
-    setSearchNameQuery,
-    searchBibJournalQuery,
-    setSearchBibJournalQuery,
-    searchBibYearQuery,
-    setSearchBibYearQuery,
-    sortBy,
-    setSortBy,
-    filterChanged,
-    setFilterChanged,
-    sortOrder,
-    uniqueKeywords,
-    countModelsForKeyword,
-    selectedKeywords,
-    handleKeywordChange,
-    toggleSortOrder,
-    showAdvancedFilters,
-    toggleAdvancedFilters,
-    handleResetFilters,
-}) => {
+const FilterBar = () => {
+    // TODO: Handle reset
+
+    const keywordCounts = useAtomValue(filteredKeywordCountsAtom);
+    const [selectedKeywords, setSelectedKeywords] = useAtom(selectedKeywordsAtom);
+    const [showAdvancedFilters, setShowAdvancedFilters] = useAtom(showAdvancedFiltersAtom);
+
+    const toggleKeyword = (keyword: string) => {
+        setSelectedKeywords((prevState) => {
+            if (prevState.includes(keyword)) {
+                return prevState.filter((item) => item !== keyword);
+            } else {
+                return [...prevState, keyword];
+            }
+        });
+    };
+
+    const toggleAdvancedFilters = () => {
+        setShowAdvancedFilters(!showAdvancedFilters);
+    };
+
+    // TODO: Probably just define our own card?
     return (
-        <div className="filter-bar">
-            <div className="filter-bar__content">
-                <div className="filter-bar__basic">
-                    <div className="filter-bar__basic-items">
-                        <TextField
-                            label="Search"
-                            variant="outlined"
-                            value={searchNameQuery}
-                            onChange={(e) => {
-                                setSearchNameQuery(e.target.value);
-                                setFilterChanged(true);
-                            }}
-                            InputProps={{
-                                endAdornment: (
-                                    <IconButton>
-                                        <SearchOutlinedIcon />
-                                    </IconButton>
-                                ),
-                            }}
-                            sx={{
-                                '@media only screen and (max-width: 767px)': {
-                                    marginBottom: '1rem',
-                                },
-                            }}
-                        />
-                        <div className="filter-bar__sort">
-                            <span className="filter-bar__sort-label">
-                                <b>Sort by</b>
-                            </span>
-                            <div className="filter-bar__sort-options">
-                                <Select
-                                    className="filter-bar__select"
-                                    style={{ marginLeft: '.8rem' }}
-                                    value={sortBy}
-                                    onChange={(e) => {
-                                        setSortBy(e.target.value);
-                                        setFilterChanged(true);
-                                    }}
+        <div style={{ position: 'relative', marginTop: '2rem' }}>
+            <Card
+                id="search-and-filter"
+                sx={{ borderRadius: '1rem', boxShadow: 'none', border: '2px solid var(--black)' }}
+            >
+                <CardContent>
+                    <Stack direction="column" spacing={2}>
+                        <Stack direction="row" spacing={2} alignItems="center">
+                            <Stack direction="row" spacing={2} alignItems="center" divider={<span>|</span>}>
+                                <FilterBarSearchQuery />
+                                <FilterBarSortBySelect />
+                            </Stack>
+                            <Box sx={{ flexGrow: 1 }} />
+                            <Button
+                                variant="contained"
+                                endIcon={showAdvancedFilters ? <ClearIcon /> : <SettingsIcon />}
+                                onClick={toggleAdvancedFilters}
+                                disableElevation
+                                sx={AEON_BUTTON}
+                            >
+                                {showAdvancedFilters ? 'Reset' : 'Advanced'}
+                            </Button>
+                        </Stack>
+                        {showAdvancedFilters && (
+                            <>
+                                <Stack direction="row" alignItems="center" spacing={2}>
+                                    <FilterBarJournalQuery />
+                                    <FilterBarYearQuery />
+                                </Stack>
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    spacing={1}
+                                    useFlexGap
+                                    sx={{ marginTop: '16px', flexWrap: 'wrap' }}
                                 >
-                                    <MenuItem value="name">Name</MenuItem>
-                                    <MenuItem value="inputs">Inputs count</MenuItem>
-                                    <MenuItem value="variables">Variables count</MenuItem>
-                                    <MenuItem value="regulations">Regulations count</MenuItem>
-                                </Select>
-                                <IconButton
-                                    onClick={toggleSortOrder}
-                                    style={{
-                                        transition: 'transform 0.3s ease', // Add a transition for smooth rotation
-                                        transform: `rotate(${sortOrder === 'desc' ? '0deg' : '180deg'})`, // Rotate the icon
-                                        marginLeft: '.7rem',
-                                        outline: 'none',
-                                    }}
-                                >
-                                    <SouthOutlinedIcon />
-                                </IconButton>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="filter-bar__actions">
-                        <Button
-                            style={{
-                                outline: 'none',
-                                padding: '.2rem 1rem',
-                                margin: '.2rem',
-                                backgroundColor: '#3a568c',
-                            }}
-                            variant="contained"
-                            endIcon={<ClearIcon />}
-                            onClick={handleResetFilters}
-                            disabled={!filterChanged}
-                        >
-                            Reset Filters
-                        </Button>
-                        <Button
-                            style={{
-                                outline: 'none',
-                                padding: '.2rem 1rem',
-                                margin: '.2rem',
-                                backgroundColor: '#3a568c',
-                            }}
-                            variant="contained"
-                            endIcon={
-                                <ExpandMoreOutlinedIcon
-                                    style={{
-                                        transition: 'transform 0.3s ease',
-                                        transform: `rotate(${!showAdvancedFilters ? '0deg' : '180deg'})`,
-                                    }}
-                                />
-                            }
-                            onClick={toggleAdvancedFilters}
-                        >
-                            Advanced Filter
-                        </Button>
-                    </div>
-                </div>
-                {showAdvancedFilters && (
-                    <div className="filter-bar__advanced">
-                        <div className="filter-bar__advanced-keywords" style={{ width: '-webkit-fill-available' }}>
-                            <p className="filter-bar__advanced-keywords-label">
-                                <b>Keywords:</b>
-                            </p>
-                            <div className="filter-bar__advanced-keywords-list">
-                                <br />
-                                {uniqueKeywords.map((keyword) => (
-                                    <label key={keyword}>
-                                        {countModelsForKeyword(keyword) === 0 ? (
-                                            <input
-                                                type="checkbox"
-                                                value={keyword}
-                                                checked={false}
-                                                disabled
-                                                className="filter-bar__checkbox--disabled"
-                                            />
-                                        ) : (
-                                            <input
-                                                type="checkbox"
-                                                value={keyword}
-                                                checked={selectedKeywords.includes(keyword)}
-                                                onChange={() => handleKeywordChange(keyword)}
-                                            />
-                                        )}
-                                        {keyword} [{countModelsForKeyword(keyword)}]
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="filter-bar__advanced__searches">
-                            <TextField
-                                sx={{
-                                    marginTop: '2rem',
-                                    marginLeft: '2rem',
-                                    '@media only screen and (max-width: 767px)': {
-                                        margin: '1rem 0 0 0',
-                                    },
-                                }}
-                                label="Search Publication"
-                                variant="outlined"
-                                value={searchBibJournalQuery}
-                                onChange={(e) => {
-                                    setSearchBibJournalQuery(e.target.value);
-                                    setFilterChanged(true);
-                                }}
-                                InputProps={{
-                                    endAdornment: (
-                                        <IconButton>
-                                            <SearchOutlinedIcon />
-                                        </IconButton>
-                                    ),
-                                }}
-                            />
-                            <TextField
-                                sx={{
-                                    marginTop: '2rem',
-                                    marginLeft: '2rem',
-                                    '@media only screen and (max-width: 767px)': {
-                                        margin: '1rem 0 0 0',
-                                    },
-                                }}
-                                label="Search Year"
-                                variant="outlined"
-                                value={searchBibYearQuery}
-                                onChange={(e) => {
-                                    setSearchBibYearQuery(e.target.value);
-                                    setFilterChanged(true);
-                                }}
-                                InputProps={{
-                                    endAdornment: (
-                                        <IconButton>
-                                            <SearchOutlinedIcon />
-                                        </IconButton>
-                                    ),
-                                }}
-                            />
-                        </div>
-                    </div>
-                )}
-            </div>
+                                    <b>Keywords:</b>{' '}
+                                    {keywordCounts.map(([keyword, count], index) => {
+                                        const isDisabled = count === 0;
+                                        const isChecked = selectedKeywords.includes(keyword);
+                                        const label = `${keyword} (${count})`;
+                                        const ghostLabel = `${keyword} (888)`; // For text-width calculations.
+
+                                        // This "minor hack" with the label text causes the chip to have the same width,
+                                        // no matter the number of models in its category, because there is always the
+                                        // ghost label that forces it to have the greatest possible width.
+                                        return (
+                                            <Chip
+                                                key={index}
+                                                label={
+                                                    <Box
+                                                        sx={{
+                                                            display: 'grid',
+                                                            gridTemplateColumns: '1fr',
+                                                            alignItems: 'center',
+                                                            justifyItems: 'center',
+                                                        }}
+                                                    >
+                                                        {/* 1. The Ghost (Invisible but takes space) */}
+                                                        <Box
+                                                            component="span"
+                                                            aria-label="hidden"
+                                                            sx={{
+                                                                gridArea: '1 / 1',
+                                                                visibility: 'hidden',
+                                                                whiteSpace: 'pre', // Prevents collapsing spaces
+                                                            }}
+                                                        >
+                                                            {ghostLabel}
+                                                        </Box>
+
+                                                        {/* 2. The Real Text (Visible and centered) */}
+                                                        <Box
+                                                            component="span"
+                                                            sx={{
+                                                                gridArea: '1 / 1',
+                                                                whiteSpace: 'pre',
+                                                            }}
+                                                        >
+                                                            {label}
+                                                        </Box>
+                                                    </Box>
+                                                }
+                                                size="small"
+                                                color={isChecked ? 'primary' : 'default'}
+                                                variant={isDisabled ? 'outlined' : 'filled'}
+                                                disabled={isDisabled}
+                                                onClick={() => toggleKeyword(keyword)}
+                                            ></Chip>
+                                        );
+                                    })}
+                                </Stack>
+                            </>
+                        )}
+                    </Stack>
+                </CardContent>
+            </Card>
         </div>
     );
 };

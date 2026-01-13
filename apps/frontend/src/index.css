@@ -64,6 +64,12 @@ body {
     color: var(--dark_blue);
 }
 
+.aeon-button {
+    font-size: 1.2em;
+    font-weight: 700;
+    font-family: Oswald, sans-serif;
+}
+
 .page__button {
     color: var(--white);
     border-radius: 8px;
@@ -98,6 +104,7 @@ body {
     font-size: 2.5em;
     line-height: 1.1;
     color: var(--red);
+    text-align: left;
 }
 
 p {
@@ -170,12 +177,6 @@ h3 {
     margin: 0;
 }
 
-ul {
-    margin: 0 5rem;
-    text-align: left;
-    list-style-type: square;
-}
-
 .models-page__list {
     list-style-type: none;
 }
@@ -216,7 +217,7 @@ ul {
     font-family: Oswald, sans-serif;
     font-weight: 700;
     font-size: 1.5em;
-    margin: 1rem 2rem;
+    margin: 0;
 }
 
 .models-page__item-details-numbers {
@@ -247,14 +248,20 @@ ul {
     box-sizing: border-box;
 }
 
-.filter-bar__content::before {
-    font-size: 1.2em;
+#search-and-filter::before {
+    font-size: 1em;
     content: 'Sort & Filter';
     font-weight: 700;
     position: absolute;
-    top: -0.9rem;
+    top: -0.7rem;
+    left: 8px;
     background-color: var(--white);
-    padding: 0 0.3rem;
+    padding: 0 8px;
+}
+
+/* TODO: Remove this hack */
+#search-and-filter > div {
+    padding-bottom: 16px;
 }
 
 .filter-bar__basic {
@@ -311,15 +318,6 @@ ul {
 .filter-bar__basic-items {
     display: flex;
     margin-bottom: 0.8rem;
-}
-
-.filter-bar__sort {
-    display: flex;
-    align-items: center;
-}
-
-.filter-bar__sort-label {
-    margin-left: 2rem;
 }
 
 .details-page__mobile-model-viewer {
@@ -494,18 +492,6 @@ ul {
 
     .filter-bar__basic-items {
         flex-direction: column;
-    }
-
-    .filter-bar__sort {
-        flex-direction: column;
-    }
-
-    .filter-bar__select {
-        margin: 1rem 0;
-    }
-
-    .filter-bar__sort-label {
-        margin-left: 0;
     }
 
     .filter-bar__actions {
