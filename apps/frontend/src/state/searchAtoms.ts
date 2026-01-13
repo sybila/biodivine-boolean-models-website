@@ -1,6 +1,7 @@
 import { atom } from 'jotai';
 import { LoadedBooleanModel } from '../types.ts';
 import { allKeywordsAtom, allModelsAtom } from './modelAtoms.ts';
+import { modelsPageNumberAtom } from './sortAtoms.ts';
 
 /*
     Filtering is the first step applied to the raw downloaded data. It includes keywords, publication and
@@ -13,25 +14,54 @@ import { allKeywordsAtom, allModelsAtom } from './modelAtoms.ts';
  */
 export const showAdvancedFiltersAtom = atom<boolean>(false);
 
+const searchQueryAtomInternal = atom<string>('');
+const searchBibJournalQueryAtomInternal = atom<string>('');
+const searchBibYearQueryAtomInternal = atom<string>('');
+const selectedKeywordsAtomInternal = atom<string[]>([]);
+
 /**
  * If not empty, filter only models that contain the given string *somewhere* in their metadata.
  */
-export const searchQueryAtom = atom<string>('');
+export const searchQueryAtom = atom(
+    (get) => get(searchQueryAtomInternal),
+    (_get, set, nextValue) => {
+        set(modelsPageNumberAtom, 1);
+        set(searchQueryAtomInternal, nextValue as string);
+    }
+);
 
 /**
  * If not empty, filter only models that contain the given string in their bibliography publisher.
  */
-export const searchBibJournalQueryAtom = atom<string>('');
+export const searchBibJournalQueryAtom = atom(
+    (get) => get(searchBibJournalQueryAtomInternal),
+    (_get, set, nextValue) => {
+        set(modelsPageNumberAtom, 1);
+        set(searchBibJournalQueryAtomInternal, nextValue as string);
+    }
+);
 
 /**
  * If not empty, filter only models that contain the given string in their bibliography year.
  */
-export const searchBibYearQueryAtom = atom<string>('');
+export const searchBibYearQueryAtom = atom(
+    (get) => get(searchBibYearQueryAtomInternal),
+    (_get, set, nextValue) => {
+        set(modelsPageNumberAtom, 1);
+        set(searchBibYearQueryAtomInternal, nextValue as string);
+    }
+);
 
 /**
  * If not empty, filter only models that contain all the given keywords.
  */
-export const selectedKeywordsAtom = atom<string[]>([]);
+export const selectedKeywordsAtom = atom(
+    (get) => get(selectedKeywordsAtomInternal),
+    (_get, set, nextValue) => {
+        set(modelsPageNumberAtom, 1);
+        set(selectedKeywordsAtomInternal, nextValue as string[]);
+    }
+);
 
 /**
  * Apply the `searchQuery`, `searchBibJournalQuery` and `searchBibYearQuery` filters to the main list of models.
@@ -46,56 +76,54 @@ export const filteredModelsAtom = atom<Promise<[LoadedBooleanModel, string[]][]>
     const yearQuery = get(searchBibYearQueryAtom).toLowerCase().trim();
     const keywords = get(selectedKeywordsAtom);
 
-    const searchApplied: [LoadedBooleanModel, string[]][] = data.map((model) => {
-        // First, we check keywords because those need to match exactly:
-        if (!keywords.every((kw) => model.keywords.includes(kw))) {
-            return [model, []];
-        }
+    const searchApplied: [LoadedBooleanModel, string[]][] = data
+        .filter((model) => {
+            // First, we check keywords because those need to match exactly:
+            if (!keywords.every((kw) => model.keywords.includes(kw))) return false;
+            // Then check journal and year by inclusion, but also terminate if a match is not found:
+            return !(!findQueryInContent(journalQuery, model.journal) || !findQueryInContent(yearQuery, model.year));
+        })
+        .map((model) => {
+            // Finally, search remaining metadata for words from the search query, saving info about where we found them:
+            const queryMatches: string[] = [];
+            if (searchQuery !== '') {
+                for (const word of searchQuery.split(/\s+/)) {
+                    const wordMatches = [];
+                    if (model.name.toLowerCase().includes(word)) {
+                        wordMatches.push('Name');
+                    }
+                    if (model.notes.toLowerCase().includes(word)) {
+                        wordMatches.push('Notes');
+                    }
+                    if (model.keywords.some((kw) => kw.includes(word))) {
+                        wordMatches.push('Keywords');
+                    }
+                    if (model.bib.toLowerCase().includes(word)) {
+                        wordMatches.push('Bibliography');
+                    }
+                    if (findQueryInContentArray(word, model.variableNames)) {
+                        wordMatches.push('Variables');
+                    }
+                    if (findQueryInContentArray(word, model.inputNames)) {
+                        wordMatches.push('Inputs');
+                    }
+                    if (findQueryInContentArray(word, model.outputNames)) {
+                        wordMatches.push('Outputs');
+                    }
 
-        // Then check journal and year by inclusion, but also terminate if a match is not found:
-        if (!findQueryInContent(journalQuery, model.journal) || !findQueryInContent(yearQuery, model.year)) {
-            return [model, []];
-        }
-
-        // Finally, search remaining metadata for words from the search query, saving info about where we found them:
-        const queryMatches: string[] = [];
-        if (searchQuery !== '') {
-            for (const word of searchQuery.split(/\s+/)) {
-                const wordMatches = [];
-                if (model.name.toLowerCase().includes(word)) {
-                    wordMatches.push('Name');
-                }
-                if (model.notes.toLowerCase().includes(word)) {
-                    wordMatches.push('Notes');
-                }
-                if (model.keywords.some((kw) => kw.includes(word))) {
-                    wordMatches.push('Keywords');
-                }
-                if (model.bib.toLowerCase().includes(word)) {
-                    wordMatches.push('Bibliography');
-                }
-                if (findQueryInContentArray(word, model.variableNames)) {
-                    wordMatches.push('Variables');
-                }
-                if (findQueryInContentArray(word, model.inputNames)) {
-                    wordMatches.push('Inputs');
-                }
-                if (findQueryInContentArray(word, model.outputNames)) {
-                    wordMatches.push('Outputs');
-                }
-
-                if (wordMatches.length > 0) {
-                    queryMatches.push(`Term '${word}' found in [${wordMatches.join(', ')}]`);
+                    if (wordMatches.length > 0) {
+                        queryMatches.push(`Term '${word}' found in [${wordMatches.join(', ')}]`);
+                    }
                 }
             }
-        } else {
-            queryMatches.push('not searching');
-        }
+            return [model, queryMatches];
+        });
 
-        return [model, queryMatches];
-    });
-
-    return searchApplied.filter(([, reasons]) => reasons.length > 0);
+    if (searchQuery !== '') {
+        return searchApplied.filter(([, reasons]) => reasons.length > 0);
+    } else {
+        return searchApplied;
+    }
 });
 
 export const filteredKeywordCountsAtom = atom<Promise<[string, number][]>>(async (get) => {

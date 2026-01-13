@@ -30,11 +30,17 @@ const FilterBarSortBySelect = () => {
             case ModelSortKey.REGULATIONS[0]:
                 setSortBy(ModelSortKey.REGULATIONS);
                 break;
+            case ModelSortKey.QUERY_MATCHES[0]:
+                setSortBy(ModelSortKey.QUERY_MATCHES);
+                break;
         }
     };
 
     const toggleSortOrder = () => {
-        setSortBy(([prevKey, prevSort]) => [prevKey, !prevSort]);
+        setSortBy(([prevKey, prevSort]: [[ModelSortKeyValues, boolean], [ModelSortKeyValues, boolean]]) => [
+            prevKey,
+            !prevSort,
+        ]);
     };
 
     const sortIconRotation = sortAscending ? '180deg' : '0deg';
@@ -71,6 +77,9 @@ const FilterBarSortBySelect = () => {
                     </MenuItem>
                     <MenuItem value={ModelSortKey.REGULATIONS[0]} sx={{ justifyContent: 'center' }}>
                         {ModelSortKey.REGULATIONS[0]}
+                    </MenuItem>
+                    <MenuItem value={ModelSortKey.QUERY_MATCHES[0]} sx={{ justifyContent: 'center' }}>
+                        {ModelSortKey.QUERY_MATCHES[0]}
                     </MenuItem>
                 </Select>
             </div>
