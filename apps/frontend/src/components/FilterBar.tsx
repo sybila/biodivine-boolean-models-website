@@ -1,20 +1,31 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Box, Button, Card, CardContent, Chip, Stack } from '@mui/material';
-import { useAtom, useAtomValue } from 'jotai';
-import { filteredKeywordCountsAtom, selectedKeywordsAtom, showAdvancedFiltersAtom } from '../state/searchAtoms.ts';
-import { AEON_BUTTON } from '../styles.ts';
+import { useTheme } from '@mui/material/styles';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import {
+    filteredKeywordCountsAtom,
+    searchBibJournalQueryAtom,
+    searchBibYearQueryAtom,
+    searchQueryAtom,
+    selectedKeywordsAtom,
+    showAdvancedFiltersAtom,
+} from '../state/searchAtoms.ts';
+import { AEON_BUTTON, AEON_CARD } from '../styles.ts';
 import FilterBarJournalQuery from './FilterBarJournalQuery.tsx';
 import FilterBarSearchQuery from './FilterBarSearchQuery.tsx';
 import FilterBarYearQuery from './FilterBarYearQuery.tsx';
 import FilterBarSortBySelect from './FilterBySortBySelect.tsx';
 
 const FilterBar = () => {
-    // TODO: Handle reset
+    const theme = useTheme();
 
     const keywordCounts = useAtomValue(filteredKeywordCountsAtom);
     const [selectedKeywords, setSelectedKeywords] = useAtom(selectedKeywordsAtom);
     const [showAdvancedFilters, setShowAdvancedFilters] = useAtom(showAdvancedFiltersAtom);
+    const setSearchQuery = useSetAtom(searchQueryAtom);
+    const setBibJournalQuery = useSetAtom(searchBibJournalQueryAtom);
+    const setBibYearQuery = useSetAtom(searchBibYearQueryAtom);
 
     const toggleKeyword = (keyword: string) => {
         setSelectedKeywords((prevState) => {
@@ -27,17 +38,40 @@ const FilterBar = () => {
     };
 
     const toggleAdvancedFilters = () => {
+        if (showAdvancedFilters) {
+            // If we are closing the panel, make sure to reset all filters:
+            setSearchQuery('');
+            setBibJournalQuery('');
+            setBibYearQuery('');
+            setSelectedKeywords([]);
+        }
         setShowAdvancedFilters(!showAdvancedFilters);
     };
 
-    // TODO: Probably just define our own card?
     return (
         <div style={{ position: 'relative', marginTop: '2rem' }}>
             <Card
-                id="search-and-filter"
-                sx={{ borderRadius: '1rem', boxShadow: 'none', border: '2px solid var(--black)' }}
+                sx={{
+                    ...AEON_CARD,
+                    // Render a small "mini header" at the top-left of the card.
+                    '&:before': {
+                        content: "'Sort & Filter'",
+                        backgroundColor: 'var(--white)',
+                        fontWeight: 'bold',
+                        position: 'absolute',
+                        top: '-0.7rem',
+                        left: theme.spacing(1),
+                        padding: `0 ${theme.spacing(1)}`,
+                    },
+                }}
             >
-                <CardContent>
+                <CardContent
+                    sx={{
+                        // MUI will try to put larger 3x padding at the end of each card do add "breathing room".
+                        // We very much don't want that here.
+                        paddingBottom: `${theme.spacing(2)} !important`,
+                    }}
+                >
                     <Stack direction="column" spacing={2}>
                         <Stack direction="row" spacing={2} alignItems="center">
                             <Stack direction="row" spacing={2} alignItems="center" divider={<span>|</span>}>
@@ -57,7 +91,7 @@ const FilterBar = () => {
                         </Stack>
                         {showAdvancedFilters && (
                             <>
-                                <Stack direction="row" alignItems="center" spacing={2}>
+                                <Stack direction="row" alignItems="center" spacing={2} divider={<span>|</span>}>
                                     <FilterBarJournalQuery />
                                     <FilterBarYearQuery />
                                 </Stack>
@@ -76,7 +110,7 @@ const FilterBar = () => {
                                         const ghostLabel = `${keyword} (888)`; // For text-width calculations.
 
                                         // This "minor hack" with the label text causes the chip to have the same width,
-                                        // no matter the number of models in its category, because there is always the
+                                        // no matter the number of models in its category. There is always the
                                         // ghost label that forces it to have the greatest possible width.
                                         return (
                                             <Chip

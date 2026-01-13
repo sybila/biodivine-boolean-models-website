@@ -27,9 +27,15 @@ export const allModelsAtom = atomWithQuery<LoadedBooleanModel[]>(() => {
                     }
                     const bibItem = parsedBib[0] as BibTeXEntry;
                     result.parsedBib = bibItem;
-                    result.journal = findFieldValue(bibItem.fields, 'journal')?.toLowerCase();
-                    // TODO: This could also be other special characters.
-                    result.year = findFieldValue(bibItem.fields, 'year')?.toLowerCase().replace(/['"]+/g, '');
+                    const journal = findFieldValue(bibItem.fields, 'journal')?.toLowerCase();
+                    const school = findFieldValue(bibItem.fields, 'school')?.toLowerCase();
+                    const bookTitle = findFieldValue(bibItem.fields, 'booktitle')?.toLowerCase();
+                    result.journal = journal ?? school ?? bookTitle;
+                    // This also replaces any enclosing characters in these fields.
+                    result.year = findFieldValue(bibItem.fields, 'year')
+                        ?.toLowerCase()
+                        .replace(/['"]+/g, '')
+                        .replace(/[{}]+/g, '');
                     return result;
                 }
             });

@@ -1,30 +1,27 @@
 import ArrowRightIcon from '@mui/icons-material/ArrowCircleRight';
 import InfoIcon from '@mui/icons-material/Info';
 import { Button, Card, CardContent, Chip, CircularProgress, Container, Pagination, Stack } from '@mui/material';
-import { atom, useAtom, useAtomValue } from 'jotai';
+import { useTheme } from '@mui/material/styles';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import FilterBar from '../components/FilterBar.tsx';
 import { allModelsAtom } from '../state/modelAtoms.ts';
-import { selectedKeywordsAtom } from '../state/searchAtoms.ts';
-import { sortedModelsAtom } from '../state/sortAtoms.ts';
-import { AEON_BUTTON } from '../styles.ts';
-
-/**
- * A "local" atom that is not part of the main global state. It simply defines the page this listing is on and
- * should not really be accessed by other components.
- */
-const modelsPageNumberAtom = atom<number>(1);
+import { selectedKeywordsAtom, showAdvancedFiltersAtom } from '../state/searchAtoms.ts';
+import { modelsPageNumberAtom, sortedModelsAtom } from '../state/sortAtoms.ts';
+import { AEON_BUTTON, H4_LIST_ITEM_TITLE } from '../styles.ts';
 
 const ModelsPage = () => {
     // TODO: Error handling.
+    const theme = useTheme();
     const { isLoading, isError } = useAtomValue(allModelsAtom);
     const [pageNumber, setPageNumber] = useAtom(modelsPageNumberAtom);
     const [selectedKeywords, setSelectedKeywords] = useAtom(selectedKeywordsAtom);
     const filteredAndSortedModels = useAtomValue(sortedModelsAtom);
     const numberOfModels = filteredAndSortedModels.length;
+    const setShowAdvancedFilters = useSetAtom(showAdvancedFiltersAtom);
 
-    // TODO: Changing filters must reset page number.
-    const itemsPerPage = 100;
+    const itemsPerPage = 25;
     const startIndex = (pageNumber - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedModels = filteredAndSortedModels.slice(startIndex, endIndex);
@@ -34,7 +31,8 @@ const ModelsPage = () => {
     }, [pageNumber]);
 
     const toggleKeyword = (keyword: string) => {
-        setSelectedKeywords((prevState) => {
+        setShowAdvancedFilters(true); // As soon as I select a keyword, show me the advanced filters.
+        setSelectedKeywords((prevState: string[]) => {
             if (prevState.includes(keyword)) {
                 return prevState.filter((item) => item !== keyword);
             } else {
@@ -44,7 +42,7 @@ const ModelsPage = () => {
     };
 
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ width: '100vw' }}>
             <Stack
                 direction="row"
                 spacing={2}
@@ -65,7 +63,7 @@ const ModelsPage = () => {
             </h2>
             {isLoading || isError ? <CircularProgress /> : ''}
             <Stack direction="column" spacing={4}>
-                {paginatedModels?.map(([model, _reasons]) => (
+                {paginatedModels?.map(([model, reasons]) => (
                     <Card
                         sx={{ borderRadius: '1rem', boxShadow: 'none', border: '2px solid var(--black)' }}
                         key={model.id}
@@ -73,11 +71,12 @@ const ModelsPage = () => {
                         <CardContent sx={{ textAlign: 'left' }}>
                             <Stack direction="column" spacing={2}>
                                 <Stack direction="row" alignItems="center" justifyContent="space-between">
-                                    <h4 className="models-page__item-title">
+                                    <h4 style={H4_LIST_ITEM_TITLE}>
                                         [{String(model.id).padStart(3, '0')}] {model.name}
                                     </h4>
                                     <Button
-                                        href={`/models/${model.id}`}
+                                        component={Link}
+                                        to={`/models/${model.id}`}
                                         variant="contained"
                                         disableElevation
                                         sx={AEON_BUTTON}
@@ -86,8 +85,8 @@ const ModelsPage = () => {
                                         Details
                                     </Button>
                                 </Stack>
-                                <Stack direction="row" alignItems="center" spacing={1}>
-                                    <b>Keywords:</b>{' '}
+                                <Stack direction="row" alignItems="center" spacing={1} justifyContent="left">
+                                    <b>Keywords:</b>
                                     {model.keywords.map((keyword, index) => (
                                         <Chip
                                             key={index}
@@ -99,54 +98,41 @@ const ModelsPage = () => {
                                     ))}
                                 </Stack>
                                 <Stack direction="row" spacing={1}>
-                                    <p>
+                                    <span>
                                         <b>Inputs:</b> {model.inputs}
-                                    </p>
-                                    <p>
+                                    </span>
+                                    <span>
                                         <b>Variables:</b> {model.variables}
-                                    </p>
-                                    <p>
+                                    </span>
+                                    <span>
                                         <b>Regulations:</b> {model.regulations}
-                                    </p>
+                                    </span>
                                 </Stack>
+                                {reasons.length > 0 ? (
+                                    <span>
+                                        <b>Query match:</b> {reasons.join('; ')}.
+                                    </span>
+                                ) : (
+                                    ''
+                                )}
                             </Stack>
                         </CardContent>
                     </Card>
                 ))}
             </Stack>
-            <div>
-                <Pagination
-                    shape="rounded"
-                    color="primary"
-                    count={Math.ceil(filteredAndSortedModels.length / itemsPerPage)}
-                    page={pageNumber}
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        width: '70vw',
-                        margin: '2rem 0 3rem 8.5rem',
-                    }}
-                    sx={{
-                        '& .MuiPaginationItem-page': {
-                            backgroundColor: '#3a568c',
-                            color: 'white',
-                            outline: 'none',
-                            '&.Mui-selected': {
-                                backgroundColor: '#d05d5d',
-                            },
-                            '&:hover': {
-                                backgroundColor: '#d05d5d',
-                                opacity: '.7',
-                            },
-                        },
-                        '@media only screen and (max-width: 767px)': {
-                            width: '100vw',
-                            margin: '0 auto 1rem auto',
-                        },
-                    }}
-                    onChange={(_, value) => setPageNumber(value)}
-                />
-            </div>
+            <Pagination
+                shape="rounded"
+                color="secondary"
+                count={Math.ceil(filteredAndSortedModels.length / itemsPerPage)}
+                page={pageNumber}
+                onChange={(_, value) => setPageNumber(value)}
+                style={{
+                    marginTop: theme.spacing(4),
+                    marginBottom: theme.spacing(12),
+                    display: 'flex',
+                    justifyContent: 'center',
+                }}
+            />
         </Container>
     );
 };

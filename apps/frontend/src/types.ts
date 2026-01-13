@@ -22,6 +22,7 @@ export const ModelSortKey = {
     INPUT_NODES: ['# Input Nodes', false],
     VARIABLE_NODES: [`# Variable Nodes`, false],
     REGULATIONS: ['# Regulations', false],
+    QUERY_MATCHES: [`# Query Matches`, false],
 } as const;
 
 /**
@@ -34,7 +35,8 @@ export type ModelSortKeyValues =
     | '# All Nodes'
     | '# Input Nodes'
     | '# Variable Nodes'
-    | '# Regulations';
+    | '# Regulations'
+    | '# Query Matches';
 
 /**
  * An extension of the `BooleanModel` type that also includes other "preprocessed" data that we want to

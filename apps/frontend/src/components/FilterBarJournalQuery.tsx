@@ -1,5 +1,4 @@
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import { IconButton, TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import { useAtom } from 'jotai';
 import type { ChangeEvent } from 'react';
 import { searchBibJournalQueryAtom } from '../state/searchAtoms.ts';
@@ -12,22 +11,18 @@ const FilterBarJournalQuery = () => {
     };
 
     return (
-        <TextField
-            label="Search Publication"
-            variant="outlined"
-            size="small"
-            value={searchBibJournalQuery}
-            onChange={changeBibJournalQuery}
-            slotProps={{
-                input: {
-                    endAdornment: (
-                        <IconButton aria-label="Search publication">
-                            <SearchOutlinedIcon />
-                        </IconButton>
-                    ),
-                },
-            }}
-        />
+        <Stack direction="row" spacing={1} alignItems="center">
+            <div>
+                <b>Published by:</b>
+            </div>
+            <TextField
+                label="Journal(s)..."
+                variant="outlined"
+                value={searchBibJournalQuery}
+                size="small"
+                onChange={changeBibJournalQuery}
+            />
+        </Stack>
     );
 };
 
