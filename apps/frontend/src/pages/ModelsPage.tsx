@@ -9,7 +9,7 @@ import FilterBar from '../components/FilterBar.tsx';
 import { allModelsAtom } from '../state/modelAtoms.ts';
 import { selectedKeywordsAtom, showAdvancedFiltersAtom } from '../state/searchAtoms.ts';
 import { modelsPageNumberAtom, sortedModelsAtom } from '../state/sortAtoms.ts';
-import { AEON_BUTTON, H4_LIST_ITEM_TITLE } from '../styles.ts';
+import { AEON_BUTTON, H1_HEADER, H1_HEADER_EMPHASIS, H2_PAGE_TITLE, H4_LIST_ITEM_TITLE } from '../styles.ts';
 
 const ModelsPage = () => {
     // TODO: Error handling.
@@ -48,19 +48,22 @@ const ModelsPage = () => {
                 spacing={2}
                 alignItems="center"
                 justifyContent="space-between"
-                sx={{ marginTop: '8rem', marginBottom: '4rem', marginLeft: '16px', marginRight: '16px' }}
+                sx={{
+                    marginTop: '8rem',
+                    marginBottom: '4rem',
+                    marginLeft: theme.spacing(2),
+                    marginRight: theme.spacing(2),
+                }}
             >
-                <h1 className="page__title">
-                    BIODIVINE<span className="page__subtitle">/Boolean Models</span>
+                <h1 style={H1_HEADER}>
+                    BIODIVINE<span style={H1_HEADER_EMPHASIS}>/Boolean Models</span>
                 </h1>
                 <Button href="/" variant="contained" disableElevation sx={AEON_BUTTON} endIcon={<InfoIcon />}>
                     About Us
                 </Button>
             </Stack>
             <FilterBar />
-            <h2 className="page__content-title" style={{ marginLeft: '16px' }}>
-                Models List [{numberOfModels}]
-            </h2>
+            <h2 style={{ marginLeft: theme.spacing(2), ...H2_PAGE_TITLE }}>Models List [{numberOfModels}]</h2>
             {isLoading || isError ? <CircularProgress /> : ''}
             <Stack direction="column" spacing={4}>
                 {paginatedModels?.map(([model, reasons]) => (
