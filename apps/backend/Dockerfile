@@ -4,16 +4,20 @@ WORKDIR /usr/bbm-website
 # Copy importable lib projects, the target backend, monorepo package.json and package-lock and root tsconfig.json
 COPY ./libs ./libs
 COPY ./apps/backend ./apps/backend
-COPY ./package*.json ./tsconfig.json ./
+COPY ./package*.json ./tsconfig*.json ./
+
+# This is just a dummy URL for generating prisma schema; it won't be used in production
+ENV DATABASE_URL="postgres://postgres:postgres@localhost:5432/postgres"
 
 # Install dependencies with npm clean install
 RUN npm ci
 
-# Generate database types
-RUN npm run generate -w database
+# Generate database client
+RUN npm run schema-generate
+RUN npm run build -w ./libs/database
 
 # Build backend
-RUN npm run build -w backend
+RUN npm run build -w ./apps/backend
 
 ################################
 FROM node:22-alpine AS runner
@@ -29,7 +33,7 @@ COPY --from=builder /usr/bbm-website/apps/backend/package.json  ./apps/backend/p
 COPY --from=builder /usr/bbm-website/apps/backend/dist ./
 
 # Copy generated db js files
-COPY --from=builder /usr/bbm-website/libs/database/src/generated ./libs/database/src/generated/
+COPY --from=builder /usr/bbm-website/libs/database ./libs/database
 
 # Debug print to see if the repo structure fits
 RUN tree  .
@@ -42,4 +46,4 @@ RUN ls -a node_modules
 
 EXPOSE 3000
 
-CMD ["node", "-r", "tsconfig-paths/register", "apps/backend/src/index.js"]
+CMD ["node", "index.js"]

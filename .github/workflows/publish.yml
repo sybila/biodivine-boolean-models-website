@@ -10,10 +10,7 @@ jobs:
     name: Build backend database
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: "postgresql://postgres:postgres@localhost:5555/postgres"
-    defaults:
-      run:
-        working-directory: libs/database
+      DATABASE_URL: "postgresql://bbm:bbm@localhost:5555/bbm?schema=public"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,19 +20,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Start database
-        run: |
-          docker run -d \
-          --name my-db \
-          -p 5555:5432 \
-          -e PGDATA=/data \
-          -e POSTGRES_USER=postgres \
-          -e POSTGRES_PASSWORD=postgres \
-          -e POSTGRES_DB=postgres \
-          postgres:16
+        run: docker compose -f ./docker-compose.dev-db.yml up -d
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: npm ci
       - name: Init DB with prisma and automatically seed
-        run: npx prisma migrate dev --name init
+        run: npm run schema-generate
+      - name: Init DB with prisma and automatically seed
+        run: npm run schema-migrate
+      - name: Init DB with prisma and automatically seed
+        run: npm run database-seed
       - name: Commit current state of the container
-        run: docker commit my-db daemontus/bbm-database:latest
+        run: docker commit bbm-database daemontus/bbm-database:latest
       - name: Push image
         run: docker push daemontus/bbm-database
 

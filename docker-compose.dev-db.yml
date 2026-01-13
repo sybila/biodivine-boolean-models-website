@@ -13,8 +13,4 @@ services:
       - POSTGRES_USER=bbm
       - POSTGRES_PASSWORD=bbm
       - POSTGRES_DB=bbm
-    volumes:
-      - bbm-db-data:/var/lib/postgresql
-      
-volumes:
-  bbm-db-data:
+      - PGDATA=/data
