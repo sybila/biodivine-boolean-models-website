@@ -47,6 +47,6 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
 
 if (env.NODE_ENV !== 'test') {
     app.listen(port, () => {
-        console.log(`[${new Date().toISOString()}] RESTful API for model repository is listening on port ${port}`);
+        console.log(`[${new Date().toISOString()}] REST API for model repository is listening on port ${port}`);
     });
 }

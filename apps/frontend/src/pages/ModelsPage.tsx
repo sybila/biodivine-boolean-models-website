@@ -1,216 +1,153 @@
-import { CircularProgress, Pagination } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { useAtom } from 'jotai';
-import { useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import * as BbmApiService from '../BbmApiService.ts';
+import ArrowRightIcon from '@mui/icons-material/ArrowCircleRight';
+import InfoIcon from '@mui/icons-material/Info';
+import { Button, Card, CardContent, Chip, CircularProgress, Container, Pagination, Stack } from '@mui/material';
+import { atom, useAtom, useAtomValue } from 'jotai';
+import { useEffect } from 'react';
 import FilterBar from '../components/FilterBar.tsx';
-import useFilteredModels from '../hooks/useFilteredModels.ts';
-import {
-    filterChangedAtom,
-    pageNumberAtom,
-    searchBibJournalQueryAtom,
-    searchBibYearQueryAtom,
-    searchNameQueryAtom,
-    selectedKeywordsAtom,
-    showAdvancedAFiltersAtom,
-    sortByAtom,
-    sortOrderAtom,
-} from '../state/filtersAtom.ts';
-import { FilterOptions } from '../types.ts';
+import { allModelsAtom } from '../state/modelAtoms.ts';
+import { selectedKeywordsAtom } from '../state/searchAtoms.ts';
+import { sortedModelsAtom } from '../state/sortAtoms.ts';
+import { AEON_BUTTON } from '../styles.ts';
+
+/**
+ * A "local" atom that is not part of the main global state. It simply defines the page this listing is on and
+ * should not really be accessed by other components.
+ */
+const modelsPageNumberAtom = atom<number>(1);
 
 const ModelsPage = () => {
-    const { data: models, isLoading } = useQuery({
-        queryKey: ['models'],
-        queryFn: () => BbmApiService.getAll(),
-    });
+    // TODO: Error handling.
+    const { isLoading, isError } = useAtomValue(allModelsAtom);
+    const [pageNumber, setPageNumber] = useAtom(modelsPageNumberAtom);
+    const [selectedKeywords, setSelectedKeywords] = useAtom(selectedKeywordsAtom);
+    const filteredAndSortedModels = useAtomValue(sortedModelsAtom);
+    const numberOfModels = filteredAndSortedModels.length;
 
-    const [searchNameQuery, setSearchNameQuery] = useAtom<string>(searchNameQueryAtom);
-    const [searchBibJournalQuery, setSearchBibJournalQuery] = useAtom<string>(searchBibJournalQueryAtom);
-    const [searchBibYearQuery, setSearchBibYearQuery] = useAtom<string>(searchBibYearQueryAtom);
-    const [sortBy, setSortBy] = useAtom<string>(sortByAtom);
-    const [sortOrder, setSortOrder] = useAtom<string>(sortOrderAtom);
-    const [selectedKeywords, setSelectedKeywords] = useAtom<string[]>(selectedKeywordsAtom);
-    const [showAdvancedFilters, setShowAdvancedFilters] = useAtom<boolean>(showAdvancedAFiltersAtom);
-    const [filterChanged, setFilterChanged] = useAtom<boolean>(filterChangedAtom);
-    const [pageNumber, setPageNumber] = useAtom(pageNumberAtom);
-
-    const filterOptions: FilterOptions = {
-        searchNameQuery,
-        searchBibJournalQuery,
-        searchBibYearQuery,
-        sortBy,
-        sortOrder,
-        selectedKeywords,
-    };
-
-    console.log(filterOptions);
-
-    const filteredModels = useFilteredModels(models!, filterOptions);
-    const numberOfModels = filteredModels.length;
-
-    const itemsPerPage = 10;
+    // TODO: Changing filters must reset page number.
+    const itemsPerPage = 100;
     const startIndex = (pageNumber - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const paginatedModels = filteredModels.slice(startIndex, endIndex);
-
-    const toggleSortOrder = () => {
-        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-        setFilterChanged(true);
-    };
-
-    const toggleAdvancedFilters = () => {
-        setShowAdvancedFilters(!showAdvancedFilters);
-        setFilterChanged(!showAdvancedFilters);
-    };
-
-    const uniqueKeywords = useMemo(() => {
-        return [...new Set(models?.flatMap((model) => model.keywords))];
-    }, [models]);
-
-    const handleKeywordChange = (keyword: string) => {
-        setFilterChanged(true);
-        if (selectedKeywords.includes(keyword)) {
-            setSelectedKeywords(selectedKeywords.filter((kw) => kw !== keyword));
-        } else {
-            setSelectedKeywords([...selectedKeywords, keyword]);
-        }
-    };
-
-    const countModelsForKeyword = (keyword: string) => {
-        return filteredModels.filter((model) => model.keywords.includes(keyword)).length;
-    };
-
-    const handleResetFilters = () => {
-        setSearchNameQuery('');
-        setSelectedKeywords([]);
-        setSortBy('name');
-        setSortOrder('asc');
-        setShowAdvancedFilters(false);
-        setSearchBibJournalQuery('');
-        setSearchBibYearQuery('');
-        setFilterChanged(false);
-    };
+    const paginatedModels = filteredAndSortedModels.slice(startIndex, endIndex);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [pageNumber]);
 
+    const toggleKeyword = (keyword: string) => {
+        setSelectedKeywords((prevState) => {
+            if (prevState.includes(keyword)) {
+                return prevState.filter((item) => item !== keyword);
+            } else {
+                return [...prevState, keyword];
+            }
+        });
+    };
+
     return (
-        <>
-            <div className="page__header">
+        <Container maxWidth="lg">
+            <Stack
+                direction="row"
+                spacing={2}
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{ marginTop: '8rem', marginBottom: '4rem', marginLeft: '16px', marginRight: '16px' }}
+            >
                 <h1 className="page__title">
-                    <span className="page__subtitle">Model Repository/</span>BIODIVINE
+                    BIODIVINE<span className="page__subtitle">/Boolean Models</span>
                 </h1>
-                <Link to="/">
-                    <button className="page__button">About Us</button>
-                </Link>
+                <Button href="/" variant="contained" disableElevation sx={AEON_BUTTON} endIcon={<InfoIcon />}>
+                    About Us
+                </Button>
+            </Stack>
+            <FilterBar />
+            <h2 className="page__content-title" style={{ marginLeft: '16px' }}>
+                Models List [{numberOfModels}]
+            </h2>
+            {isLoading || isError ? <CircularProgress /> : ''}
+            <Stack direction="column" spacing={4}>
+                {paginatedModels?.map(([model, _reasons]) => (
+                    <Card
+                        sx={{ borderRadius: '1rem', boxShadow: 'none', border: '2px solid var(--black)' }}
+                        key={model.id}
+                    >
+                        <CardContent sx={{ textAlign: 'left' }}>
+                            <Stack direction="column" spacing={2}>
+                                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                                    <h4 className="models-page__item-title">
+                                        [{String(model.id).padStart(3, '0')}] {model.name}
+                                    </h4>
+                                    <Button
+                                        href={`/models/${model.id}`}
+                                        variant="contained"
+                                        disableElevation
+                                        sx={AEON_BUTTON}
+                                        endIcon={<ArrowRightIcon />}
+                                    >
+                                        Details
+                                    </Button>
+                                </Stack>
+                                <Stack direction="row" alignItems="center" spacing={1}>
+                                    <b>Keywords:</b>{' '}
+                                    {model.keywords.map((keyword, index) => (
+                                        <Chip
+                                            key={index}
+                                            label={keyword}
+                                            size="small"
+                                            color={selectedKeywords.includes(keyword) ? 'primary' : 'default'}
+                                            onClick={() => toggleKeyword(keyword)}
+                                        ></Chip>
+                                    ))}
+                                </Stack>
+                                <Stack direction="row" spacing={1}>
+                                    <p>
+                                        <b>Inputs:</b> {model.inputs}
+                                    </p>
+                                    <p>
+                                        <b>Variables:</b> {model.variables}
+                                    </p>
+                                    <p>
+                                        <b>Regulations:</b> {model.regulations}
+                                    </p>
+                                </Stack>
+                            </Stack>
+                        </CardContent>
+                    </Card>
+                ))}
+            </Stack>
+            <div>
+                <Pagination
+                    shape="rounded"
+                    color="primary"
+                    count={Math.ceil(filteredAndSortedModels.length / itemsPerPage)}
+                    page={pageNumber}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        width: '70vw',
+                        margin: '2rem 0 3rem 8.5rem',
+                    }}
+                    sx={{
+                        '& .MuiPaginationItem-page': {
+                            backgroundColor: '#3a568c',
+                            color: 'white',
+                            outline: 'none',
+                            '&.Mui-selected': {
+                                backgroundColor: '#d05d5d',
+                            },
+                            '&:hover': {
+                                backgroundColor: '#d05d5d',
+                                opacity: '.7',
+                            },
+                        },
+                        '@media only screen and (max-width: 767px)': {
+                            width: '100vw',
+                            margin: '0 auto 1rem auto',
+                        },
+                    }}
+                    onChange={(_, value) => setPageNumber(value)}
+                />
             </div>
-            <FilterBar
-                searchNameQuery={searchNameQuery}
-                setSearchNameQuery={setSearchNameQuery}
-                searchBibJournalQuery={searchBibJournalQuery}
-                setSearchBibJournalQuery={setSearchBibJournalQuery}
-                searchBibYearQuery={searchBibYearQuery}
-                setSearchBibYearQuery={setSearchBibYearQuery}
-                sortBy={sortBy}
-                setSortBy={setSortBy}
-                filterChanged={filterChanged}
-                setFilterChanged={setFilterChanged}
-                sortOrder={sortOrder}
-                uniqueKeywords={uniqueKeywords}
-                countModelsForKeyword={countModelsForKeyword}
-                selectedKeywords={selectedKeywords}
-                handleKeywordChange={handleKeywordChange}
-                toggleSortOrder={toggleSortOrder}
-                showAdvancedFilters={showAdvancedFilters}
-                toggleAdvancedFilters={toggleAdvancedFilters}
-                handleResetFilters={handleResetFilters}
-            />
-            {isLoading ? (
-                <CircularProgress />
-            ) : (
-                <div>
-                    <ul className="models-page__list">
-                        <h2 className="page__content-title models-page__list-title">Models List [{numberOfModels}]</h2>
-                        {paginatedModels?.map((model) => (
-                            <li key={model.id}>
-                                <div className="models-page__item">
-                                    <div className="models-page__item-info">
-                                        <h4 className="models-page__item-title">{model.name}</h4>
-                                        <div className="models-page__item-details">
-                                            <div className="models-page__item-details-data">
-                                                <b>Keywords:</b>{' '}
-                                                {model.keywords.map((keyword, index) => (
-                                                    <button
-                                                        key={index}
-                                                        className={
-                                                            selectedKeywords.includes(keyword)
-                                                                ? 'models-page__keyword--selected models-page__keyword'
-                                                                : 'models-page__keyword'
-                                                        }
-                                                        onClick={() => handleKeywordChange(keyword)}
-                                                    >
-                                                        [{keyword}]
-                                                    </button>
-                                                ))}
-                                            </div>
-                                            <div className="models-page__item-details-numbers">
-                                                <p className="models-page__item-details-data">
-                                                    <b>Inputs:</b> {model.inputs}
-                                                </p>
-                                                <p className="models-page__item-details-data">
-                                                    <b>Regulations:</b> {model.regulations}
-                                                </p>
-                                                <p className="models-page__item-details-data">
-                                                    <b>Variables:</b> {model.variables}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <Link className="models-page__details-link" to={`/models/${model.id}`}>
-                                        <button className="page__button models-page__details-button">
-                                            Details {'>'}
-                                        </button>
-                                    </Link>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                    <Pagination
-                        shape="rounded"
-                        color="primary"
-                        count={Math.ceil(filteredModels.length / itemsPerPage)}
-                        page={pageNumber}
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            width: '70vw',
-                            margin: '2rem 0 3rem 8.5rem',
-                        }}
-                        sx={{
-                            '& .MuiPaginationItem-page': {
-                                backgroundColor: '#3a568c',
-                                color: 'white',
-                                outline: 'none',
-                                '&.Mui-selected': {
-                                    backgroundColor: '#d05d5d',
-                                },
-                                '&:hover': {
-                                    backgroundColor: '#d05d5d',
-                                    opacity: '.7',
-                                },
-                            },
-                            '@media only screen and (max-width: 767px)': {
-                                width: '100vw',
-                                margin: '0 auto 1rem auto',
-                            },
-                        }}
-                        onChange={(_, value) => setPageNumber(value)}
-                    />
-                </div>
-            )}
-        </>
+        </Container>
     );
 };
 

@@ -1,0 +1,52 @@
+import { atom } from 'jotai';
+import { LoadedBooleanModel, ModelSortKey, ModelSortKeyValues } from '../types.ts';
+import { filteredModelsAtom } from './searchAtoms.ts';
+
+/*
+    Sorting is the second step applied to the filtered list of models. It also
+ */
+
+/**
+ * Stores the current sorting configuration.
+ */
+export const sortByAtom = atom<readonly [ModelSortKeyValues, boolean]>(ModelSortKey.ID);
+
+export const sortedModelsAtom = atom<Promise<[LoadedBooleanModel, string[]][]>>(async (get) => {
+    const filteredModels = await get(filteredModelsAtom);
+    const [sortByKey, sortAscending] = get(sortByAtom);
+    return filteredModels.sort(([left, _lr], [right, _rr]) => {
+        let comparison = 0;
+        switch (sortByKey) {
+            case ModelSortKey.ID[0]:
+                comparison = left.id - right.id;
+                break;
+            case ModelSortKey.NAME[0]:
+                comparison = left.name.localeCompare(right.name);
+                break;
+            case ModelSortKey.YEAR[0]:
+                // Try to interpret years as numbers:
+                const leftYear = Number(left.year ?? '0');
+                const rightYear = Number(right.year ?? '0');
+                if (Number.isNaN(leftYear) || Number.isNaN(rightYear)) {
+                    comparison = (left.year ?? '').localeCompare(right.year ?? '');
+                } else {
+                    comparison = leftYear - rightYear;
+                }
+                break;
+            case ModelSortKey.ALL_NODES[0]:
+                comparison = left.variables + left.inputs - (right.variables + right.inputs);
+                break;
+            case ModelSortKey.INPUT_NODES[0]:
+                comparison = left.inputs - right.inputs;
+                break;
+            case ModelSortKey.VARIABLE_NODES[0]:
+                comparison = left.variables - right.variables;
+                break;
+            case ModelSortKey.REGULATIONS[0]:
+                comparison = left.regulations - right.regulations;
+                break;
+        }
+
+        return sortAscending ? comparison : -comparison;
+    });
+});
