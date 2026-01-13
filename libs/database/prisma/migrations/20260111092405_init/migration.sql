@@ -10,7 +10,18 @@ CREATE TABLE "BooleanModel" (
     "regulations" INTEGER NOT NULL,
     "notes" TEXT NOT NULL,
     "bib" TEXT NOT NULL,
-    "modelData" BYTEA NOT NULL,
+    "variableNames" TEXT[],
+    "inputNames" TEXT[],
+    "outputNames" TEXT[],
 
     CONSTRAINT "BooleanModel_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BooleanModelData" (
+    "modelId" INTEGER NOT NULL,
+    "mimeType" TEXT NOT NULL,
+    "modelData" BYTEA NOT NULL,
+
+    CONSTRAINT "BooleanModelData_pkey" PRIMARY KEY ("modelId","mimeType")
 );

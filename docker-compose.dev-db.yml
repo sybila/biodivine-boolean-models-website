@@ -1,0 +1,20 @@
+# This configuration is intended for the initial setup of the database, not for production.
+
+services:
+  postgres:
+    image: postgres:18-trixie
+    restart: always
+    container_name: bbm-database
+    ports:
+      - "5555:5432"
+    environment:
+      # Note that the database should never be exposed to the internet
+      # or even local network. As such, it is safe to just use static credentials.
+      - POSTGRES_USER=bbm
+      - POSTGRES_PASSWORD=bbm
+      - POSTGRES_DB=bbm
+    volumes:
+      - bbm-db-data:/var/lib/postgresql
+      
+volumes:
+  bbm-db-data:

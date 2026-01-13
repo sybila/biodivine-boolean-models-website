@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "NodeNext",
+        "sourceMap": true,
+        "strict": true,
+        "moduleResolution": "nodenext",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowJs": true,
+
+        // project references
+        "composite": true,
+        "declaration": true,
+        "declarationMap": true,
+        "incremental": true,
+        "skipLibCheck": true,
+        "noEmitOnError": true
+    }
+}

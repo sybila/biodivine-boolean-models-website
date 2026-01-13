@@ -9,32 +9,32 @@
         "lint": "eslint  --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
     },
-    "proxy": "http://localhost:3000",
     "dependencies": {
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
-        "@mui/icons-material": "^5.14.13",
-        "@mui/material": "^5.14.13",
-        "@tanstack/react-query": "^5.74.3",
-        "axios": "^1.8.4",
+        "@mui/icons-material": "^7.3.7",
+        "@mui/material": "^7.3.7",
+        "@tanstack/query-core": "^5.90.16",
+        "@tanstack/react-query": "^5.90.16",
+        "axios": "^1.13.2",
         "bibtex-parse": "^2.1.0",
         "cytoscape": "^3.31.2",
-        "latex-to-unicode": "^0.1.0",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-router-dom": "6.16.0",
-        "recoil": "^0.7.7"
+        "jotai": "^2.16.1",
+        "jotai-tanstack-query": "^0.11.0",
+        "marked": "^17.0.1",
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3",
+        "react-router-dom": "^7.12.0"
     },
     "devDependencies": {
         "@types/node": "^20.8.2",
-        "@types/react": "^18.2.15",
-        "@types/react-dom": "^18.2.7",
-        "@typescript-eslint/eslint-plugin": "^8.30.1",
-        "@typescript-eslint/parser": "^8.30.1",
-        "@vitejs/plugin-react": "^4.4.0",
-        "typescript": "^5.8.3",
-        "unicodeit": "^0.7.5",
-        "vite": "^6.2.6",
-        "vite-tsconfig-paths": "^5.1.4"
+        "@types/react": "^19.2.8",
+        "@types/react-dom": "^19.2.3",
+        "@typescript-eslint/eslint-plugin": "^8.52.0",
+        "@typescript-eslint/parser": "^8.52.0",
+        "@vitejs/plugin-react": "^5.1.2",
+        "typescript": "^5.9.3",
+        "vite": "^7.3.1",
+        "vite-tsconfig-paths": "^6.0.4"
     }
 }

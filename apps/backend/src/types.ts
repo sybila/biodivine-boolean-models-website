@@ -6,6 +6,12 @@ export type ApiResponse<T> =
       }
     | {
           status: 'failure';
-          data: T;
           error: string;
       };
+
+export function errResponse(message: string): ApiResponse<unknown> {
+    return {
+        status: 'failure',
+        error: message,
+    };
+}
